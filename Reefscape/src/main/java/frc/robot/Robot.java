@@ -6,8 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystem.drivetrain;
-import frc.robot.subsystem.operatorinterface;
+import frc.robot.subsystems.drivetrain;
+import frc.robot.subsystems.operatorinterface;
 //might have to import command scheduler if current code doesn't work
 
 

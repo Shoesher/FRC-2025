@@ -1,4 +1,4 @@
-package frc.robot.subsystem;
+package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -11,7 +11,7 @@ public class operatorinterface extends SubsystemBase {
     private drivetrain drive = drivetrain.getInstance();
 
     //constructors
-    private operatorinterface(){
+    public operatorinterface(){
         controller = new XboxController(0);
     }
 
