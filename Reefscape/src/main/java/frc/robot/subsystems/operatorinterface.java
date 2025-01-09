@@ -18,7 +18,7 @@ public class operatorinterface extends SubsystemBase {
     //Integrating Subsystem and driver inputs
     private void updateDrive(){
         //find proper controller method for d pad later
-        drive.Drivecode(controller.getLeftY(), controller.getRightY(), controller.getLeftBumper(), controller.getRightBumper());
+        drive.Drivecode(controller.getLeftY(), controller.getRightY(), controller.getLeftBumperButton(), controller.getRightBumperButton());
     }
 
     @Override
