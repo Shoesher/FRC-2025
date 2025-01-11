@@ -9,7 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 
-public class aIntake {
+public class aIntake extends SubsystemBase {
 
     private static aIntake algae = null; //put this if you want the robot to periodically call this
 
@@ -38,20 +38,17 @@ public class aIntake {
 
         if(button1){
             double reset = armStates[1];
-            setArm(reset);//🤯
+            setArm(reset);
         } else if(button2){
             double armUp = armStates[0];
             setArm(armUp);
         } else if(button3){
             double armProcess = armStates[2];
-            setArm(armProcess); // 🐧
+            setArm(armProcess); 
         }
-
-        // 🔥🔥🔥
     }
 
     public void intakeAlgae(double leftTrigger, double rightTrigger){
-
         if(leftTrigger > 0.1){
             intake.set(1);
         } else if(rightTrigger > 0.1){

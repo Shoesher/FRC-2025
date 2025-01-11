@@ -10,6 +10,7 @@ import frc.robot.subsystem.aIntake;
 import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
+import frc.robot.subsystem.lift;
 //might have to import command scheduler if current code doesn't work
 
 
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   public operatorinterface oi;
   public aIntake algae;
   public cIntake coral;
+  public lift elevator;
 
   @Override
   public void robotInit() {
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
     oi= operatorinterface.getInstance();
     algae = aIntake.getInstance();
     coral = cIntake.getInstance();
+    elevator = lift.getInstance();
   }
 
   @Override

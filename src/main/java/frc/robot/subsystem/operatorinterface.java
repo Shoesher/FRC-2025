@@ -11,6 +11,7 @@ public class operatorinterface extends SubsystemBase {
     private drivetrain drive = drivetrain.getInstance();
     private aIntake algae = aIntake.getInstance();
     private cIntake coral = cIntake.getInstance();
+    private lift elevator = lift.getInstance();
 
     //constructors
     private operatorinterface(){
@@ -32,11 +33,16 @@ public class operatorinterface extends SubsystemBase {
         coral.setIntake(controller.getAButton());
     }
 
+    private void updateLift(){
+        elevator.freeLift(controller.getRightX());
+    }
+
     @Override
     public void periodic(){
         updateDrive();
         updateCoral();
         updateAlgae();
+        updateLift();
     }
     
     
