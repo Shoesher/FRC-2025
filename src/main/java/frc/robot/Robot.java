@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystem.aIntake;
+import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
 //might have to import command scheduler if current code doesn't work
@@ -20,11 +22,15 @@ public class Robot extends TimedRobot {
 
   public drivetrain drive;
   public operatorinterface oi;
+  public aIntake algae;
+  public cIntake coral;
 
   @Override
   public void robotInit() {
     drive = drivetrain.getInstance();
     oi= operatorinterface.getInstance();
+    algae = aIntake.getInstance();
+    coral = cIntake.getInstance();
   }
 
   @Override
