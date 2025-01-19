@@ -1,27 +1,38 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
+//this code for now is mostly driver oriented
+//will be modified to use commands for pid
 public class cIntake extends SubsystemBase {
 
     private static cIntake cIntake = null; //put this if you want the robot to periodically call this
 
-    private TalonFX motor1;
-    private TalonFX motor2;
+    private SparkMax clawMotor;
+    private SparkMax armMotor;
+    private SparkMaxConfig clawConfig;
+    private SparkMaxConfig armConfig;
 
     private cIntake(){
-        motor1 = new TalonFX(1);
-        motor2 = new TalonFX(2);
+        clawMotor = new SparkMax(5, MotorType.kBrushless);
+        armMotor = new SparkMax(6, MotorType.kBrushless);
+        clawConfig = new SparkMaxConfig();
+        clawConfig = new SparkMaxConfig();
+
+        armMotor.configure(clawConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        clawMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    private void setIntakeAndEject(boolean button){
-        if (button){
-            motor1.set(1);
-            motor2.set(-1); 
-        } else {
-            motor1.set(0);
-            motor2.set(0);
+    void runClaw(boolean button1, boolean button2){
+        if (button1){
+            clawMotor.set(1);
+        } else if(button2) {
+            clawMotor.set(-1);
         }
     }
 
@@ -31,9 +42,4 @@ public class cIntake extends SubsystemBase {
         }
         return cIntake;
     }
-
-    public void setIntake(boolean button){
-        setIntakeAndEject(button);
-    }
 }
-// 🐧

@@ -30,7 +30,7 @@ public class operatorinterface extends SubsystemBase {
     }
 
     private void updateCoral(){
-        coral.setIntake(controller.getAButton());
+        coral.runClaw(controller.getBButton(), controller.getAButton());
     }
 
     private void updateLift(){

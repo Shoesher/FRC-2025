@@ -10,13 +10,11 @@ public class lift extends SubsystemBase{
     private static lift elevator = null; //put this if you want the robot to periodically call this
 
     private TalonFX Rlift;
-    private TalonFX Llift;
     private Encoder liftEncoder;
     private double liftStates[] = {};
 
     private lift(){
-        Rlift = new TalonFX(3);
-        Llift = new TalonFX(4);
+        Rlift = new TalonFX(7);
         liftEncoder = new Encoder(0, 4);
     }
 
