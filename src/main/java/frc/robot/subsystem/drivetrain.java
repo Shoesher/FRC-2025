@@ -2,6 +2,7 @@ package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -16,7 +17,6 @@ import com.pathplanner.lib.controllers.PPLTVController;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -49,8 +49,8 @@ public class drivetrain extends SubsystemBase {
 
     //Gyro stuff
     private Pigeon2 gyro;
-    private Encoder rightEncoder;
-    private Encoder leftEncoder;
+    private RelativeEncoder rightEncoder;
+    private RelativeEncoder leftEncoder;
     private DifferentialDriveOdometry odometry;
     public AutoBuilder autoBuilder;
     private DifferentialDriveKinematics kinematics;
@@ -68,8 +68,8 @@ public class drivetrain extends SubsystemBase {
         //PathPlanner
         autoBuilder = new AutoBuilder();
         gyro = new Pigeon2(0);
-        rightEncoder = new Encoder(0,1);
-        leftEncoder = new Encoder(0,2);
+        rightEncoder = rightfront.getEncoder();
+        leftEncoder = leftfront.getEncoder();
         //odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(navx.getYaw()), leftEncoder.getDistance(), rightEncoder.getDistance());
         autoBuilder = new AutoBuilder();
         kinematics = new DifferentialDriveKinematics(1.09);
@@ -192,18 +192,18 @@ public class drivetrain extends SubsystemBase {
         }
         //resetPosition (reset pose)
         public void resetPose(Pose2d pose) {
-            leftEncoder.reset();
-            rightEncoder.reset();
+            leftEncoder.setPosition(0);
+            rightEncoder.setPosition(0);
             gyro.reset();
-            odometry.resetPosition(gyro.getRotation2d() ,leftEncoder.getDistance(), rightEncoder.getDistance(), pose);
+            odometry.resetPosition(gyro.getRotation2d() ,leftEncoder.getPosition(), rightEncoder.getPosition(), pose);
         }
     
     
         //Kinematics stuff
     
-        //get Chasis speed (getCurrentSpeeds)
+        //get Chasis speed (getCurrentSpeeds) 
         public ChassisSpeeds getCurrentSpeeds() {
-            return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds((leftEncoder.getRate() * 18.85)/60, rightEncoder.getRate()/60));
+            return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds((leftEncoder.getVelocity() * 18.85)/60, rightEncoder.getVelocity()/60));
         }
         //drive method
         public void drive(ChassisSpeeds chassisSpeeds) {
@@ -215,8 +215,8 @@ public class drivetrain extends SubsystemBase {
             final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
             final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
         
-            final double leftOutput = leftPID.calculate(leftEncoder.getRate(), speeds.leftMetersPerSecond);
-            final double rightOutput = rightPID.calculate(rightEncoder.getRate(), speeds.rightMetersPerSecond);
+            final double leftOutput = leftPID.calculate(leftEncoder.getVelocity(), speeds.leftMetersPerSecond);
+            final double rightOutput = rightPID.calculate(rightEncoder.getVelocity(), speeds.rightMetersPerSecond);
         
             leftfront.setVoltage(leftOutput + leftFeedforward);
             rightfront.setVoltage(rightOutput + rightFeedforward);
