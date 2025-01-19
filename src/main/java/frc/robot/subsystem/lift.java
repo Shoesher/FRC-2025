@@ -1,25 +1,23 @@
 package frc.robot.subsystem;
 import edu.wpi.first.wpilibj.Encoder;
-//This life is assuming we are using two cim motors for the elevator (Apapt if using other motors)
+//Assuming we are using Krakens
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 
 public class lift extends SubsystemBase{
 
     private static lift elevator = null; //put this if you want the robot to periodically call this
 
-    private WPI_TalonSRX Rlift;
-    private WPI_TalonSRX Llift;
+    private TalonFX Rlift;
+    private TalonFX Llift;
     private Encoder liftEncoder;
     private double liftStates[] = {};
 
     private lift(){
-        Rlift = new WPI_TalonSRX(3);
-        Llift = new WPI_TalonSRX(4);
+        Rlift = new TalonFX(3);
+        Llift = new TalonFX(4);
         liftEncoder = new Encoder(0, 4);
-        
-        Llift.follow(Rlift);
-        Llift.setInverted(true);
     }
 
     void freeLift(double yStick){
