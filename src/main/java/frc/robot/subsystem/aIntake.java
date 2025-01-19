@@ -31,7 +31,7 @@ public class aIntake extends SubsystemBase {
 
         intake.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         angle.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    }// 👏👏
+    }
     
     public void angleArm(boolean button1, boolean button2, boolean button3){
        
