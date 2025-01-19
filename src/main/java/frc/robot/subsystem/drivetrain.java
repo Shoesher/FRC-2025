@@ -10,6 +10,10 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 // pathplanner
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPLTVController;
+
+import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.wpilibj.Encoder;
@@ -53,6 +57,7 @@ public class drivetrain extends SubsystemBase {
     private final PIDController leftPID;
     private final PIDController rightPID;
     private final SimpleMotorFeedforward feedforward;
+    private RobotConfig config;
     
     private drivetrain(){
         leftfront = new SparkMax(3, MotorType.kBrushless);
@@ -61,7 +66,7 @@ public class drivetrain extends SubsystemBase {
         rightrear = new SparkMax(2, MotorType.kBrushless);
        
         //PathPlanner
-
+        autoBuilder = new AutoBuilder();
         gyro = new Pigeon2(0);
         rightEncoder = new Encoder(0,1);
         leftEncoder = new Encoder(0,2);
@@ -71,6 +76,7 @@ public class drivetrain extends SubsystemBase {
         leftPID = new PIDController(1, 0, 0);
         rightPID = new PIDController(1, 0, 0);
         feedforward = new SimpleMotorFeedforward(1, 3);
+        
 
         //motor configuration
         SparkMaxConfig config1 = new SparkMaxConfig();
@@ -87,11 +93,38 @@ public class drivetrain extends SubsystemBase {
         rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // leftfront.setInverted(true);
-        // leftrear.setInverted(true);
+        //pathplanner
+    
+        try{
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // leftrear.follow(leftfront);
-        // rightrear.follow(rightfront);
+    
+
+        // Configure AutoBuilder last
+        AutoBuilder.configure(
+            this::getPose, // Robot pose supplier
+            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getCurrentSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
+            config, // The robot configuration
+            () -> {
+                // Boolean supplier that controls when the path will be mirrored for the red alliance
+                // This will flip the path being followed to the red side of the field.
+                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+                return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
+
     }
 
     //Drive Methods
@@ -107,11 +140,11 @@ public class drivetrain extends SubsystemBase {
         //using bumpers to increase or decrease gear
         if (Lbumper) {
             speed-=1;
-            if (speed<1) speed = 1;
+            if (speed<1){speed = 1;}
         }
         else if(Rbumper) {
             speed+=1;
-            if (speed>4) speed = 4;
+            if (speed>4){speed = 4;}
         }
         //setting speed based on gear
         switch (speed){
@@ -132,7 +165,7 @@ public class drivetrain extends SubsystemBase {
         }
     }
 
-    public void Drivecode(double Leftjoy, double Rightjoy, boolean LeftBumper, boolean RightBumper) {
+    public void Drivecode(double Leftjoy, double Rightjoy, boolean LeftBumper, boolean RightBumper){
         double gear = SpeedMode(LeftBumper, RightBumper);
 
         if(Math.abs(Leftjoy) > 0.1|| Math.abs(Rightjoy) > 0.1){
@@ -146,30 +179,8 @@ public class drivetrain extends SubsystemBase {
         //note that the encoder spin rate values will be off because it's not connected to the shaft at the end of the gearbox 
         //so the code might have to account for gear ratio
 
-        //autoBuilder = new AutoBuilder();
-        //     AutoBuilder.configureRamsete(
-    
-                
-        //         this::getPose, // Robot pose supplier
-        //         this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-        //         this::getCurrentSpeeds, // Current ChassisSpeeds supplier
-        //         this::drive, // Method that will drive the robot given ChassisSpeeds
-                
-        //         new ReplanningConfig(), // Default path replanning config. See the API for the options here
-        //         () -> {
-        //           // Boolean supplier that controls when the path will be mirrored for the red alliance
-        //           // This will flip the path being followed to the red side of the field.
-        //           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-    
-        //           var alliance = DriverStation.getAlliance();
-        //           if (alliance.isPresent()) {
-        //             return alliance.get() == DriverStation.Alliance.Red;
-        //           }
-        //           return false;
-        //         },
-        //         (Subsystem) this // Reference to this subsystem to set requirements
-        // );
-        // }
+       
+        
         
         // //auto methods:
     
