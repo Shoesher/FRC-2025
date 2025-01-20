@@ -12,7 +12,7 @@ public class lift extends SubsystemBase{
     private double liftStates[] = {};
 
     private lift(){
-        Rlift = new TalonFX(7   );
+        Rlift = new TalonFX(7);
        
     }
         

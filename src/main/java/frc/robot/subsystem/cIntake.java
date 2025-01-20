@@ -39,10 +39,10 @@ public class cIntake extends SubsystemBase {
         clawMotor = new SparkMax(5, MotorType.kBrushless);
         armMotor = new SparkMax(6, MotorType.kBrushless);
         clawConfig = new SparkMaxConfig();
-        clawConfig = new SparkMaxConfig();
+        armConfig = new SparkMaxConfig();
 
-        armMotor.configure(clawConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        clawMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        clawMotor.configure(clawConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         //Attack modes
         cPID = new PIDController(0.01, 0, 0);
@@ -50,7 +50,7 @@ public class cIntake extends SubsystemBase {
     }
 
     public void runClaw(double input1, double input2){
-        if (input1 > 0.1 && input2 < 0.9){
+        if (input1 > 0.1 && input1 < 0.9){
             clawMotor.set(1);
         } else if(input2 > 0.1 && input2 < 0.9) {
             clawMotor.set(-1);
