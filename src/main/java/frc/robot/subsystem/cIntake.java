@@ -49,10 +49,10 @@ public class cIntake extends SubsystemBase {
         armCoder = armMotor.getEncoder();
     }
 
-    public void runClaw(double input1, double input2){
-        if (input1 > 0.1 && input1 < 0.9){
+    public void runClaw(boolean input1, boolean input2){
+        if (input1){
             clawMotor.set(1);
-        } else if(input2 > 0.1 && input2 < 0.9) {
+        } else if(input2) {
             clawMotor.set(-1);
         }
     }

@@ -25,11 +25,11 @@ public class operatorinterface extends SubsystemBase {
     }
 
     private void updateAlgae(){
-        algae.intakeAlgae(controller.getPOV(90), controller.getPOV(270));
+        algae.intakeAlgae(controller.getLeftTriggerAxis(), controller.getRightTriggerAxis());
     }
 
     private void updateCoral(){
-        coral.runClaw(controller.getLeftTriggerAxis(), controller.getRightTriggerAxis());
+        coral.runClaw(controller.getXButton(), controller.getYButton());
         coral.setArm(controller.getBButton(), controller.getAButton());
     }
 

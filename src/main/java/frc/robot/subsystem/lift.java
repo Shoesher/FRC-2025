@@ -53,7 +53,7 @@ public class lift extends SubsystemBase{
                 liftPID(position1);
               
             case 2:
-
+                
                int position2 = 1;
                liftPID(position2);
             
