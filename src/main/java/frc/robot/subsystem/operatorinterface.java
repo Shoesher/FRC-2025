@@ -30,11 +30,12 @@ public class operatorinterface extends SubsystemBase {
 
     private void updateCoral(){
         coral.runClaw(controller.getLeftTriggerAxis(), controller.getRightTriggerAxis());
-        coral.setArm(controller.getBButton(), controller.getAButton(), controller.getYButton());
+        coral.setArm(controller.getBButton(), controller.getAButton());
     }
 
     private void updateLift(){
         elevator.freeLift(controller.getRightY());
+        elevator.setLift(controller.getPOV(0), controller.getPOV(180));
     }
 
     @Override

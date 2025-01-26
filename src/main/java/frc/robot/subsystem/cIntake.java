@@ -32,7 +32,7 @@ public class cIntake extends SubsystemBase {
     private final PIDController cPID;
     private RelativeEncoder armCoder;
     private double encoderDPP = 42;
-    private double armStates[] = {270,45,0}; //proccessing angle to be determined, same with intake angle
+    private double armStates[] = {270,35,0}; //proccessing angle to be determined, same with intake angle
 
     private cIntake(){
         //Motor initialization
@@ -57,16 +57,33 @@ public class cIntake extends SubsystemBase {
         }
     }
 
-    public void setArm(boolean button1, boolean button2, boolean button3){
-        if(button1){//reset button
+    public void setArm(boolean button1, boolean button2){
+
+        int state = 1;
+
+        if(button1){
+            state+=1;
+            if(state > 3){
+                state = 3;
+            }
+        }
+
+        if(button2){
+            state-=1;
+            if(state < 1){
+                state = 1;
+            }
+        }
+
+        if(state == 1){//reset button
             var target = armStates[0];
             armPID(target);
         }
-        else if(button2){//attack angle
+        else if(state == 2){//attack angle
             var target = armStates[1];
             armPID(target);
         }
-        else if(button3){//lvl1 angle
+        else if(state == 3){//lvl1 angle
             var target = armStates[2];
             armPID(target);
         }
