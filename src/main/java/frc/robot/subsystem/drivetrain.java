@@ -178,9 +178,6 @@ public class drivetrain extends SubsystemBase {
     
         //note that the encoder spin rate values will be off because it's not connected to the shaft at the end of the gearbox 
         //so the code might have to account for gear ratio
-
-       
-        
         
         // //auto methods:
     

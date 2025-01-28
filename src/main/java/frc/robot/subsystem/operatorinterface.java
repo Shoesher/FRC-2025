@@ -2,12 +2,11 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-//import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class operatorinterface extends SubsystemBase {
     private static operatorinterface oi = null; //add comments pls
     private XboxController controller;
+    private XboxController controller2;
     private drivetrain drive = drivetrain.getInstance();
     private aIntake algae = aIntake.getInstance();
     private cIntake coral = cIntake.getInstance();
@@ -16,6 +15,7 @@ public class operatorinterface extends SubsystemBase {
     //constructors
     private operatorinterface(){
         controller = new XboxController(0);
+        controller2 = new XboxController(1);
     }
 
     //Integrating Subsystem and driver inputs
@@ -25,17 +25,17 @@ public class operatorinterface extends SubsystemBase {
     }
 
     private void updateAlgae(){
-        algae.intakeAlgae(controller.getLeftTriggerAxis(), controller.getRightTriggerAxis());
+        algae.intakeAlgae(controller2.getLeftTriggerAxis(), controller2.getRightTriggerAxis());
     }
 
     private void updateCoral(){
-        coral.runClaw(controller.getXButton(), controller.getYButton());
-        coral.setArm(controller.getBButton(), controller.getAButton());
+        //coral.runClaw(controller2.getXButton(), controller2.getYButton());
+        coral.setArm(controller2.getBButton(), controller2.getAButton());
     }
 
     private void updateLift(){
-        elevator.freeLift(controller.getRightY());
-        elevator.setLift(controller.getPOV(0), controller.getPOV(180));
+        elevator.freeLift(controller2.getRightY());
+        elevator.setLift(controller2.getPOV(0), controller2.getPOV(180));
     }
 
     @Override
