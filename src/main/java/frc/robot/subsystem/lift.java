@@ -14,7 +14,7 @@ public class lift extends SubsystemBase{
     private TalonFX liftMotor;
     private double liftStates[] = {0, 1440, 2160, 3240}; //temporary value while true encoder values are determines
 
-    private lift(){
+    lift(){
         liftMotor = new TalonFX(7);  
         cPID = new PIDController(0.5, 0, 0);
     }
@@ -51,7 +51,7 @@ public class lift extends SubsystemBase{
                 
                 int position1 = 0;
                 liftPID(position1);
-              
+                liftMotor.setPosition(0); //may be incorrect
             case 2:
                 
                int position2 = 1;
@@ -79,7 +79,6 @@ public class lift extends SubsystemBase{
         double calcPID = cPID.calculate(calcAngle, setAngle);
         
         liftMotor.set(calcPID);
-        
     }
 
     public static lift getInstance(){

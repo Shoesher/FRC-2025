@@ -11,6 +11,7 @@ public class operatorinterface extends SubsystemBase {
     private aIntake algae = aIntake.getInstance();
     private cIntake coral = cIntake.getInstance();
     private lift elevator = lift.getInstance();
+    private climber climb = climber.getInstance();
 
     //constructors
     private operatorinterface(){
@@ -25,7 +26,7 @@ public class operatorinterface extends SubsystemBase {
     }
 
     private void updateAlgae(){
-        algae.intakeAlgae(controller2.getLeftTriggerAxis(), controller2.getRightTriggerAxis());
+        algae.intakeAlgae(controller2.getLeftBumperButton(), controller2.getRightBumperButton());
     }
 
     private void updateCoral(){
@@ -38,12 +39,17 @@ public class operatorinterface extends SubsystemBase {
         elevator.setLift(controller2.getPOV(0), controller2.getPOV(180));
     }
 
+    private void updateClimb(){
+        climb.pullClimb(controller.getLeftTriggerAxis(), controller.getRightTriggerAxis());
+    }
+
     @Override
     public void periodic(){
         updateDrive();
         updateCoral();
         updateAlgae();
         updateLift();
+        updateClimb();
     }
     
     
