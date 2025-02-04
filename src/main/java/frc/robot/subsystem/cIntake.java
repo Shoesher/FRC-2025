@@ -32,7 +32,7 @@ public class cIntake extends SubsystemBase {
     private final PIDController cPID;
     private RelativeEncoder armCoder;
     private double encoderDPP = 42;
-    private double armStates[] = {270,35,0}; //proccessing angle to be determined, same with intake angle
+    private double armStates[] = {270,90,35,0}; //proccessing angle to be determined, same with intake angle
 
     private cIntake(){
         //Motor initialization
