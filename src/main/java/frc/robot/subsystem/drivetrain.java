@@ -168,10 +168,20 @@ public class drivetrain extends SubsystemBase {
     public void Drivecode(double Leftjoy, double Rightjoy, boolean LeftBumper, boolean RightBumper){
         double gear = SpeedMode(LeftBumper, RightBumper);
 
-        if(Math.abs(Leftjoy) > 0.1|| Math.abs(Rightjoy) > 0.1){
-            leftfront.set((Leftjoy + Rightjoy)*gear);
-            rightfront.set((Leftjoy - Rightjoy)*gear);
-        } else{
+        // if(Math.abs(Leftjoy) > 0.1|| Math.abs(Rightjoy) > 0.1){
+        //     leftfront.set((Leftjoy + Rightjoy)*gear);
+        //     rightfront.set((Leftjoy - Rightjoy)*gear);
+        // } else{
+        //     Stopdrive();
+        // }
+
+        if (Math.abs(Leftjoy) > 0.1) {
+            leftfront.set(Leftjoy * gear);
+            rightfront.set(Leftjoy * gear);
+        } else if (Math.abs(Rightjoy) > 0.1) {
+            leftfront.set(Rightjoy * gear);
+            rightfront.set(Rightjoy * gear);
+        } else {
             Stopdrive();
         }
     }
