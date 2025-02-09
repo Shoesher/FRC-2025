@@ -64,8 +64,6 @@ public class lift extends SubsystemBase{
     
             case 4:
 
-                int position4 = 3;   
-                liftPID(position4); 
         }
     }
 

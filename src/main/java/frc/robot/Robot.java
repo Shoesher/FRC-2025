@@ -6,12 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.RobotContainer;
 import frc.robot.subsystem.aIntake;
 import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
 import frc.robot.subsystem.lift;
-//might have to import command scheduler if current code doesn't work
 
 
 
@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
   public aIntake algae;
   public cIntake coral;
   public lift elevator;
+  public RobotContainer robotContainer;
 
   @Override
   public void robotInit() {
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
     algae = aIntake.getInstance();
     coral = cIntake.getInstance();
     elevator = lift.getInstance();
+    robotContainer = new RobotContainer();
   }
 
   @Override
@@ -43,6 +45,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    
   }
 
   @Override

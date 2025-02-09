@@ -49,47 +49,32 @@ public class cIntake extends SubsystemBase {
         armCoder = armMotor.getEncoder();
     }
 
-    public void runClaw(boolean input1, boolean input2){
-        if (input1){
-            clawMotor.set(1);
-        } else if(input2) {
-            clawMotor.set(-1);
-        }
-    }
-
     public void setArm(boolean button1, boolean button2){
 
-        int state = 1;
+        int position = 1;
 
         if(button1){
-            state+=1;
-            if(state > 3){
-                state = 3;
+            position +=1;
+            if(position > 4){
+                position = 4;
             }
         }
 
         if(button2){
-            state-=1;
-            if(state < 1){
-                state = 1;
+            position -=1;
+            if(position < 1){
+                position = 1;
             }
         }
 
-        if(state == 1){//reset button
-            var target = armStates[0];
-            armPID(target);
-        }
-        else if(state == 2){//attack angle
-            var target = armStates[1];
-            armPID(target);
-        }
-        else if(state == 3){//lvl1 angle
-            var target = armStates[2];
-            armPID(target);
-        }
+        //The position value minus one will be the correct state value for the armPID to recieve the correct setAngle
+        armPID(position-1);
     }
 
-    public void armPID(double setAngle){
+
+
+    public void armPID(int state){
+        double setAngle = armStates[state];
         double calcAngle = (armCoder.getPosition()/encoderDPP)*360;
         //multiply set angle by # of roations which is (armCoder ticks/ DPP) then multiply the target angle to get the co terminal equivilent
         //if the PID is having trouble try above solution

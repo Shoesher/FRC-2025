@@ -20,13 +20,14 @@ public class aIntake extends SubsystemBase {
     private aIntake(){
         //Motor initialization
         intake = new SparkMax(7, MotorType.kBrushless);
-        SparkMaxConfig algaeConfig = new SparkMaxConfig();
+        algaeConfig = new SparkMaxConfig();
         intake.configure(algaeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         algaeMotor = new WPI_TalonSRX(7);
         algaeMotor.setInverted(true);
     }
     
+    //for teleop
     public void intakeAlgae(boolean input1, boolean input2){
         if(input1){
             intake.set(1);
@@ -38,6 +39,31 @@ public class aIntake extends SubsystemBase {
         }
     }
 
+    //algae commajnds
+    public void angleAlgae(boolean command){
+        if(command){
+            algaeMotor.set(0.5);   
+        } 
+    }
+
+    public void angleInverse(boolean command){
+        if (command){
+            algaeMotor.set(-0.5);    
+        }
+    }
+
+    public void runForward(boolean command){
+        if(command){
+            intake.set(1);
+        }
+    }
+    
+    public void runBackward(boolean command){
+        if(command){
+            intake.set(-1);
+        }
+    }
+    
     public static aIntake getInstance(){
         if (algae == null){
             algae = new aIntake();
