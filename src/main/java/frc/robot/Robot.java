@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.RobotContainer;
 import frc.robot.subsystem.aIntake;
 import frc.robot.subsystem.cIntake;
@@ -27,25 +28,29 @@ public class Robot extends TimedRobot {
   public cIntake coral;
   public lift elevator;
   public RobotContainer robotContainer;
+  public Command getAutonomousCommand;
 
   @Override
   public void robotInit() {
     drive = drivetrain.getInstance();
     oi= operatorinterface.getInstance();
-    algae = aIntake.getInstance();
-    coral = cIntake.getInstance();
-    elevator = lift.getInstance();
+    // algae = aIntake.getInstance();
+    // coral = cIntake.getInstance();
+    // elevator = lift.getInstance();
     robotContainer = new RobotContainer();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    
   }
 
   @Override
   public void autonomousInit() {
-    
+    if(getAutonomousCommand != null){
+      getAutonomousCommand.schedule();
+  }
   }
 
   @Override

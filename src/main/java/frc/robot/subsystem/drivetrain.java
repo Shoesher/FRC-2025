@@ -22,15 +22,13 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.geometry.Pose2d;
-
-
-
+import edu.wpi.first.math.geometry.Rotation2d;
 
 // import com.pathplanner.lib.auto.AutoBuilder;
 
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 
 
@@ -56,7 +54,7 @@ public class drivetrain extends SubsystemBase {
     private DifferentialDriveKinematics kinematics;
     private final PIDController leftPID;
     private final PIDController rightPID;
-    private final SimpleMotorFeedforward feedforward;
+    // private final SimpleMotorFeedforward feedforward;
     private RobotConfig config;
     
     private drivetrain(){
@@ -70,12 +68,12 @@ public class drivetrain extends SubsystemBase {
         gyro = new Pigeon2(0);
         rightEncoder = rightfront.getEncoder();
         leftEncoder = leftfront.getEncoder();
-        //odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(navx.getYaw()), leftEncoder.getDistance(), rightEncoder.getDistance());
+        odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), leftEncoder.getPosition(), rightEncoder.getPosition());
         autoBuilder = new AutoBuilder();
-        kinematics = new DifferentialDriveKinematics(1.09);
-        leftPID = new PIDController(1, 0, 0);
-        rightPID = new PIDController(1, 0, 0);
-        feedforward = new SimpleMotorFeedforward(1, 3);
+        kinematics = new DifferentialDriveKinematics(0.608);
+        leftPID = new PIDController(0.001, 0.2, 0.4);
+        rightPID = new PIDController(0.001, 0.2, 0.4);
+        // feedforward = new SimpleMotorFeedforward(1, 3);
         
 
         //motor configuration
@@ -168,20 +166,10 @@ public class drivetrain extends SubsystemBase {
     public void Drivecode(double Leftjoy, double Rightjoy, boolean LeftBumper, boolean RightBumper){
         double gear = SpeedMode(LeftBumper, RightBumper);
 
-        // if(Math.abs(Leftjoy) > 0.1|| Math.abs(Rightjoy) > 0.1){
-        //     leftfront.set((Leftjoy + Rightjoy)*gear);
-        //     rightfront.set((Leftjoy - Rightjoy)*gear);
-        // } else{
-        //     Stopdrive();
-        // }
-
-        if (Math.abs(Leftjoy) > 0.1) {
-            leftfront.set(Leftjoy * gear);
-            rightfront.set(Leftjoy * gear);
-        } else if (Math.abs(Rightjoy) > 0.1) {
-            leftfront.set(Rightjoy * gear);
-            rightfront.set(Rightjoy * gear);
-        } else {
+        if(Math.abs(Leftjoy) > 0.1|| Math.abs(Rightjoy) > 0.1){
+            leftfront.set((Leftjoy + Rightjoy)*gear);
+            rightfront.set((Leftjoy - Rightjoy)*gear);
+        } else{
             Stopdrive();
         }
     }
@@ -219,14 +207,17 @@ public class drivetrain extends SubsystemBase {
         }
         //set speeds
         public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-            final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
-            final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
+            // final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
+            // final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
         
             final double leftOutput = leftPID.calculate(leftEncoder.getVelocity(), speeds.leftMetersPerSecond);
             final double rightOutput = rightPID.calculate(rightEncoder.getVelocity(), speeds.rightMetersPerSecond);
         
-            leftfront.setVoltage(leftOutput + leftFeedforward);
-            rightfront.setVoltage(rightOutput + rightFeedforward);
+            // leftfront.setVoltage(leftOutput + leftFeedforward);
+            // rightfront.setVoltage(rightOutput + rightFeedforward);
+
+             leftfront.setVoltage(leftOutput);
+             rightfront.setVoltage(rightOutput);
         }
 
 
