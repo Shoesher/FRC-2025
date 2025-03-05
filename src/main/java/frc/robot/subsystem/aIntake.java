@@ -12,7 +12,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 public class aIntake extends SubsystemBase {
 
     private static aIntake algae = null; //put this if you want the robot to periodically call this
-
     private SparkMax intake;
     private WPI_TalonSRX algaeMotor;
     private SparkMaxConfig algaeConfig;
@@ -22,7 +21,6 @@ public class aIntake extends SubsystemBase {
         intake = new SparkMax(6, MotorType.kBrushless);
         algaeConfig = new SparkMaxConfig();
         intake.configure(algaeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         algaeMotor = new WPI_TalonSRX(9);
         algaeMotor.setInverted(true);
     }

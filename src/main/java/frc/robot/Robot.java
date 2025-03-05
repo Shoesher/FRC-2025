@@ -14,12 +14,6 @@ import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
 import frc.robot.subsystem.lift;
 
-
-
-//We're only gonna use this for initializing path planner and autonomous lol
-
-
-
 public class Robot extends TimedRobot {
 
   public drivetrain drive;
@@ -32,12 +26,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    // drive = drivetrain.getInstance();
-    // oi= operatorinterface.getInstance();
-    // algae = aIntake.getInstance();
-    // coral = cIntake.getInstance();
+    drive = drivetrain.getInstance();
+    oi= operatorinterface.getInstance();
+    algae = aIntake.getInstance();
+    coral = cIntake.getInstance();
     elevator = lift.getInstance();
-    // robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
   }
 
   @Override

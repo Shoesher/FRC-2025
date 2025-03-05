@@ -39,6 +39,7 @@ public class drivetrain extends SubsystemBase {
     private SparkMax rightfront;
     private SparkMax rightrear;
     private double[] Modes = {0.25,0.5,0.75,1};
+    private int speed = 1;
 
     //Gyro stuff
     private Pigeon2 gyro;
@@ -127,15 +128,19 @@ public class drivetrain extends SubsystemBase {
     private double SpeedMode(boolean Lbumper, boolean Rbumper){
         //gear1 = 25% speed, gear2 = 50%, gear3 = 75%, gear4 = 100%
         //keep gear at 3 by default make a constant switch case statment that sets returns a mode based the speed value
-        int speed = 3;
+    
         //using bumpers to increase or decrease gear
         if (Lbumper) {
-            speed-=1;
-            if (speed<1){speed = 1;}
+            speed--;
+            if (speed < 1){
+                speed = 1;
+            }
         }
         else if(Rbumper) {
-            speed+=1;
-            if (speed>4){speed = 4;}
+            speed++;
+            if (speed > 4){
+                speed = 4;
+            }
         }
         //setting speed based on gear
         switch (speed){
@@ -152,7 +157,7 @@ public class drivetrain extends SubsystemBase {
                 return Modes[3];
                 
             default:
-                return Modes[2];
+                return Modes[0];
         }
     }
 
@@ -185,11 +190,10 @@ public class drivetrain extends SubsystemBase {
             gyro.reset();
             odometry.resetPosition(gyro.getRotation2d() ,leftEncoder.getPosition(), rightEncoder.getPosition(), pose);
         }
-    
-    
+
         //Kinematics stuff
-    
         //get Chasis speed (getCurrentSpeeds) 
+        
         public ChassisSpeeds getCurrentSpeeds() {
             return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds((leftEncoder.getVelocity() * 18.85)/60, rightEncoder.getVelocity()/60));
         }

@@ -36,7 +36,7 @@ public class operatorinterface extends SubsystemBase {
 
     private void updateLift(){
         elevator.freeLift(controller2.getRightY());
-        elevator.setLift(controller.getRightBumperButton(), controller.getLeftBumperButton());
+        elevator.setLift(controller2.getRightBumperButton(), controller2.getLeftBumperButton());
     }
 
     private void updateClimb(){
