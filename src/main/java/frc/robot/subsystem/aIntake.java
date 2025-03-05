@@ -19,11 +19,11 @@ public class aIntake extends SubsystemBase {
 
     private aIntake(){
         //Motor initialization
-        intake = new SparkMax(7, MotorType.kBrushless);
+        intake = new SparkMax(6, MotorType.kBrushless);
         algaeConfig = new SparkMaxConfig();
         intake.configure(algaeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        algaeMotor = new WPI_TalonSRX(7);
+        algaeMotor = new WPI_TalonSRX(9);
         algaeMotor.setInverted(true);
     }
     

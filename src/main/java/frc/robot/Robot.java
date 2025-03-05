@@ -32,12 +32,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    drive = drivetrain.getInstance();
-    oi= operatorinterface.getInstance();
+    // drive = drivetrain.getInstance();
+    // oi= operatorinterface.getInstance();
     // algae = aIntake.getInstance();
     // coral = cIntake.getInstance();
-    // elevator = lift.getInstance();
-    robotContainer = new RobotContainer();
+    elevator = lift.getInstance();
+    // robotContainer = new RobotContainer();
   }
 
   @Override

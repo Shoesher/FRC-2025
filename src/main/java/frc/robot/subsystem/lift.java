@@ -1,10 +1,12 @@
 package frc.robot.subsystem;
-//Assuming we are using Krakens
+
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import edu.wpi.first.math.controller.PIDController;
-
 
 public class lift extends SubsystemBase{
 
@@ -13,62 +15,59 @@ public class lift extends SubsystemBase{
     private final PIDController cPID;
     private TalonFX liftMotor;
     private double liftStates[] = {0, 1440, 2160, 3240}; //temporary value while true encoder values are determines
+    private TalonFXConfiguration liftConfig;
+    private int index = 1;
 
-    lift(){
+    private lift(){
         liftMotor = new TalonFX(7);  
-        cPID = new PIDController(0.5, 0, 0);
-    }
+        cPID = new PIDController(0.025, 0, 0);
+        liftConfig = new TalonFXConfiguration();
+        liftConfig.withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
+    }                                                                        
         
-        
-    void freeLift(double yStick){
-        if(yStick > 0.3 || yStick < -0.3){ //0.3 to avoid lifting elevator while driving error
+    public void freeLift(double yStick){
+        if(yStick > 0.2 || yStick < -0.2){ //0.2 to avoid lifting elevator while driving error
             liftMotor.set(yStick);
         }
     }   
 
     //this requires the size of the sprocket on the gear to calculate needed encoder values
     //also requires use of pov to use the Dpad
-    public void setLift(int input1, int input2){ //assuming input1 is up and input 2 is down
+    public void setLift(boolean input1, boolean input2){ //assuming input1 is up and input 2 is down
 
-        int index = 1;
-
-        if(input1 == 0 && input1 != 180){
-            index +=1;
+        if(input1){
+            index ++;
             if( index > 4){
                 index = 4;
             }
         }
 
-        if(input2 == 180 && input2 != 0){
-            index -=1;
+        if(input2){
+            index --;
             if( index < 1){
                 index = 1;
             }
         }
 
         switch (index){
-            default:
-                
-                int position1 = 0;
-                liftPID(position1);
-                liftMotor.setPosition(0); //may be incorrect
+            case 1:   
+                liftPID(0);
+
             case 2:
-                
-               int position2 = 1;
-               liftPID(position2);
-            
+               liftPID(1);
+
             case 3:
+                liftPID(2);
 
-                int position3 = 2; 
-                liftPID(position3);
-    
             case 4:
+                liftPID(3);
 
+            default:
+                liftPID(0);
         }
     }
 
     public void liftPID(int state) {
-
         double oPosition = liftMotor.getPosition().getValueAsDouble(); 
         double setAngle = liftStates[state];
         double calcAngle = (oPosition/2048)*360;

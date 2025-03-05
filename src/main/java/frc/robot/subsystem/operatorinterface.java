@@ -26,7 +26,7 @@ public class operatorinterface extends SubsystemBase {
     }
 
     private void updateAlgae(){
-        algae.intakeAlgae(controller2.getLeftBumper(), controller2.getRightBumper());
+        algae.intakeAlgae(controller2.getXButton(), controller2.getYButton());
     }
 
     private void updateCoral(){
@@ -36,7 +36,7 @@ public class operatorinterface extends SubsystemBase {
 
     private void updateLift(){
         elevator.freeLift(controller2.getRightY());
-        elevator.setLift(controller2.getPOV(0), controller2.getPOV(180));
+        elevator.setLift(controller.getRightBumperButton(), controller.getLeftBumperButton());
     }
 
     private void updateClimb(){

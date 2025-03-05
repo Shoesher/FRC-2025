@@ -22,10 +22,7 @@ public class cIntake extends SubsystemBase {
 
     private static cIntake cIntake = null; //put this if you want the robot to periodically call this
 
-    //claw initialization
-    private SparkMax clawMotor;
     private SparkMax armMotor;
-    private SparkMaxConfig clawConfig;
     private SparkMaxConfig armConfig;
 
     //arm initialiation
@@ -33,16 +30,13 @@ public class cIntake extends SubsystemBase {
     private RelativeEncoder armCoder;
     private double encoderDPP = 42;
     private double armStates[] = {270,90,35,0}; //proccessing angle to be determined, same with intake angle
+    private int position = 1;
 
     private cIntake(){
         //Motor initialization
-        clawMotor = new SparkMax(5, MotorType.kBrushless);
-        armMotor = new SparkMax(6, MotorType.kBrushless);
-        clawConfig = new SparkMaxConfig();
+        armMotor = new SparkMax(5, MotorType.kBrushless);
         armConfig = new SparkMaxConfig();
-
         armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        clawMotor.configure(clawConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         //Attack modes
         cPID = new PIDController(0.01, 0, 0);
@@ -51,17 +45,15 @@ public class cIntake extends SubsystemBase {
 
     public void setArm(boolean button1, boolean button2){
 
-        int position = 1;
-
         if(button1){
-            position +=1;
+            position ++;
             if(position > 4){
                 position = 4;
             }
         }
 
         if(button2){
-            position -=1;
+            position --;
             if(position < 1){
                 position = 1;
             }
@@ -70,8 +62,6 @@ public class cIntake extends SubsystemBase {
         //The position value minus one will be the correct state value for the armPID to recieve the correct setAngle
         armPID(position-1);
     }
-
-
 
     public void armPID(int state){
         double setAngle = armStates[state];
@@ -82,8 +72,6 @@ public class cIntake extends SubsystemBase {
 
         armMotor.set(calcPID);
     }
-
-
 
     public static cIntake getInstance(){
         if (cIntake == null){

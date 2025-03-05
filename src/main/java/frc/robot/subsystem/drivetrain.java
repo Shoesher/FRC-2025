@@ -25,13 +25,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 // import com.pathplanner.lib.auto.AutoBuilder;
-
-
 import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-
-
-
 
 public class drivetrain extends SubsystemBase {
 
@@ -65,7 +60,7 @@ public class drivetrain extends SubsystemBase {
        
         //PathPlanner
         autoBuilder = new AutoBuilder();
-        gyro = new Pigeon2(0);
+        gyro = new Pigeon2(10);
         rightEncoder = rightfront.getEncoder();
         leftEncoder = leftfront.getEncoder();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), leftEncoder.getPosition(), rightEncoder.getPosition());
@@ -98,8 +93,6 @@ public class drivetrain extends SubsystemBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    
 
         // Configure AutoBuilder last
         AutoBuilder.configure(
