@@ -25,10 +25,13 @@ public class climber extends SubsystemBase{
 
     public void pullClimb(double input1, double input2){
         if(input1 > 0.1){
-            climbMotor.set(1);
+            climbMotor.set(0.5);
         }
         else if(input2 > 0.1){
-            climbMotor.set(-1);
+            climbMotor.set(-0.5);
+        }
+        else{
+            climbMotor.set(0);
         }
     }
 

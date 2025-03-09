@@ -1,12 +1,13 @@
 package frc.robot.subsystem;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
+// import com.ctre.phoenix6.configs.MotorOutputConfigs;
+// import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+// import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class lift extends SubsystemBase{
 
@@ -15,19 +16,19 @@ public class lift extends SubsystemBase{
     private final PIDController cPID;
     private TalonFX liftMotor;
     private double liftStates[] = {0, 1440, 2160, 3240}; //temporary value while true encoder values are determines
-    private TalonFXConfiguration liftConfig;
+    // private TalonFXConfiguration liftConfig;
     private int index = 1;
 
     private lift(){
         liftMotor = new TalonFX(7);  
-        cPID = new PIDController(0.025, 0, 0);
-        liftConfig = new TalonFXConfiguration();
-        liftConfig.withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
+        cPID = new PIDController(0.00060, 0, 0);
+        // liftConfig = new TalonFXConfiguration();
+        // liftConfig.withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
     }                                                                        
         
     public void freeLift(double yStick){
-        if(yStick > 0.2 || yStick < -0.2){ //0.2 to avoid lifting elevator while driving error
-            liftMotor.set(yStick);
+        if(yStick > 0.1 || yStick < -0.1){ //0.2 to avoid lifting elevator while driving error
+            liftMotor.set(yStick*0.15);
         }
     }   
 
@@ -36,35 +37,25 @@ public class lift extends SubsystemBase{
     public void setLift(boolean input1, boolean input2){ //assuming input1 is up and input 2 is down
 
         if(input1){
-            index ++;
-            if( index > 4){
-                index = 4;
+            index-=1;
+            if(index >= 0){
+                index+=1;
             }
         }
 
-        if(input2){
-            index --;
-            if( index < 1){
-                index = 1;
-            }
+        else if(input2){
+           index+=1;
+           if(index <= 5){
+            index-=1;
+           }
         }
 
-        switch (index){
-            case 1:   
-                liftPID(0);
-
-            case 2:
-               liftPID(1);
-
-            case 3:
-                liftPID(2);
-
-            case 4:
-                liftPID(3);
-
-            default:
-                liftPID(0);
+        else{
+            liftMotor.set(0);
         }
+
+        liftPID(-1);
+        SmartDashboard.putNumber("index :", index);
     }
 
     public void liftPID(int state) {

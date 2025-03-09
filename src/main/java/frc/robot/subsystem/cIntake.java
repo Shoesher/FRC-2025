@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 //automated arm states
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //code has the following dependencies
 
@@ -29,7 +30,7 @@ public class cIntake extends SubsystemBase {
     private final PIDController cPID;
     private RelativeEncoder armCoder;
     private double encoderDPP = 42;
-    private double armStates[] = {270,90,35,0}; //proccessing angle to be determined, same with intake angle
+    private double armStates[] = {0,35,45,90}; //proccessing angle to be determined, same with intake angle
     private int position = 1;
 
     private cIntake(){
@@ -37,10 +38,21 @@ public class cIntake extends SubsystemBase {
         armMotor = new SparkMax(5, MotorType.kBrushless);
         armConfig = new SparkMaxConfig();
         armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         //Attack modes
-        cPID = new PIDController(0.01, 0, 0);
+        cPID = new PIDController(0.0005, 0.000005, 0);
         armCoder = armMotor.getEncoder();
+    }
+
+    public void freeArm(boolean button1, boolean button2){
+        if(button1){
+            armMotor.set(0.15);
+        }
+        else if(button2){
+            armMotor.set(-0.15);
+        }
+        else{
+            armMotor.set(0);
+        }
     }
 
     public void setArm(boolean button1, boolean button2){
@@ -48,15 +60,17 @@ public class cIntake extends SubsystemBase {
         if(button1){
             position ++;
             if(position > 4){
-                position = 4;
+                position--;
             }
+            SmartDashboard.putNumber("position :", position);
         }
 
         if(button2){
             position --;
             if(position < 1){
-                position = 1;
+                position++;
             }
+            SmartDashboard.putNumber("position :", position);
         }
 
         //The position value minus one will be the correct state value for the armPID to recieve the correct setAngle
@@ -69,7 +83,6 @@ public class cIntake extends SubsystemBase {
         //multiply set angle by # of roations which is (armCoder ticks/ DPP) then multiply the target angle to get the co terminal equivilent
         //if the PID is having trouble try above solution
         double calcPID = cPID.calculate(calcAngle, setAngle);
-
         armMotor.set(calcPID);
     }
 
