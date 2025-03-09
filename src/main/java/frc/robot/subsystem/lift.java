@@ -30,6 +30,9 @@ public class lift extends SubsystemBase{
         if(yStick > 0.1 || yStick < -0.1){ //0.2 to avoid lifting elevator while driving error
             liftMotor.set(yStick*0.15);
         }
+        else{
+            liftMotor.set(0);
+        }
     }   
 
     //this requires the size of the sprocket on the gear to calculate needed encoder values

@@ -65,12 +65,16 @@ public class cIntake extends SubsystemBase {
             SmartDashboard.putNumber("position :", position);
         }
 
-        if(button2){
+        else if(button2){
             position --;
             if(position < 1){
                 position++;
             }
             SmartDashboard.putNumber("position :", position);
+        }
+
+        else{
+            armMotor.set(0);
         }
 
         //The position value minus one will be the correct state value for the armPID to recieve the correct setAngle

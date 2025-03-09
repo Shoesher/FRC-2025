@@ -26,14 +26,17 @@ public class aIntake extends SubsystemBase {
     }
     
     //for teleop
-    public void intakeAlgae(boolean input1, boolean input2){
-        if(input1){
+    public void intakeAlgae(double input1, double input2){
+        if(input1 > 0.1){
             intake.set(1);
-            algaeMotor.set(1);
-           
-        } else if(input2){
+            algaeMotor.set(1);      
+        } else if(input2 > 0.1){
             intake.set(-1);
             algaeMotor.set(-1);
+        }
+        else{
+            intake.set(0);
+            algaeMotor.set(0); 
         }
     }
 

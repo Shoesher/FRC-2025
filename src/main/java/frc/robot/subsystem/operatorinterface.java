@@ -26,7 +26,7 @@ public class operatorinterface extends SubsystemBase {
     }
 
     private void updateAlgae(){
-        algae.intakeAlgae(controller.getXButton(), controller.getYButton());
+        algae.intakeAlgae(controller2.getLeftTriggerAxis(), controller2.getRightTriggerAxis());
     }
 
     private void updateCoral(){
