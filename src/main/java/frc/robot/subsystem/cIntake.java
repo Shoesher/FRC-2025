@@ -30,7 +30,7 @@ public class cIntake extends SubsystemBase {
     private final PIDController cPID;
     private RelativeEncoder armCoder;
     private double encoderDPP = 42;
-    private double armStates[] = {0,35,45,90}; //proccessing angle to be determined, same with intake angle
+    private double armStates[] = {0,35,80,-80}; //proccessing angle to be determined, same with intake angle
     private int position = 1;
 
     private cIntake(){
@@ -55,24 +55,24 @@ public class cIntake extends SubsystemBase {
         }
     }
 
-    public void setArm(boolean button1, boolean button2){
+    public void setArm(boolean button1, boolean button2, boolean button3, boolean button4){
 
         if(button1){
-            position ++;
-            if(position > 4){
-                position--;
-            }
+            armPID(0);
             SmartDashboard.putNumber("position :", position);
         }
-
         else if(button2){
-            position --;
-            if(position < 1){
-                position++;
-            }
+            armPID(1);
             SmartDashboard.putNumber("position :", position);
         }
-
+        else if(button3){
+            armPID(2);
+            SmartDashboard.putNumber("position :", position);
+        }
+        else if(button4){
+            armPID(3);
+            SmartDashboard.putNumber("position :", position);
+        }
         else{
             armMotor.set(0);
         }

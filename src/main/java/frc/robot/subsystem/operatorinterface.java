@@ -31,7 +31,7 @@ public class operatorinterface extends SubsystemBase {
 
     private void updateCoral(){
         //coral.runClaw(controller2.getXButton(), controller2.getYButton());
-        coral.setArm(controller2.getBButton(), controller2.getAButton());
+        coral.setArm(controller2.getYButtonPressed(), controller2.getBButtonPressed(), controller2.getAButtonPressed(), controller2.getXButtonPressed());
     }
 
     private void updateLift(){
