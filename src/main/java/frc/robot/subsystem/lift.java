@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class lift extends SubsystemBase{
@@ -18,13 +19,38 @@ public class lift extends SubsystemBase{
     private double liftStates[] = {0, 1440, 2160, 3240}; //temporary value while true encoder values are determines
     // private TalonFXConfiguration liftConfig;
     private int index = 1;
+    double kP = 0.025;
+    double kI = 0;
+    double kD = 0;
 
     private lift(){
         liftMotor = new TalonFX(7);  
         cPID = new PIDController(0.00060, 0, 0);
         // liftConfig = new TalonFXConfiguration();
         // liftConfig.withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
-    }                                                                        
+
+        // Register devices to SmartDashboard (SendableRegistry)
+        SendableRegistry.setName(liftMotor, "Lift Subsystem", "Lift Motor");
+        SendableRegistry.setName(cPID, "Lift Subsystem", "PID Controller");
+        
+        // Put initial PID values to SmartDashboard
+        SmartDashboard.putNumber("Lift kP", 0.025);
+        SmartDashboard.putNumber("Lift kI", 0.0);
+        SmartDashboard.putNumber("Lift kD", 0.0);
+    }                 
+    
+    public void periodic(){
+        // Read PID constants from SmartDashboard
+        kP = SmartDashboard.getNumber("Lift kP", 0.025);
+        kI = SmartDashboard.getNumber("Lift kI", 0.0);
+        kD = SmartDashboard.getNumber("Lift kD", 0.0);
+        
+        // Update PID controller with new values
+
+        cPID.setPID(kP, kI, kD);
+        
+        SmartDashboard.putNumber("Lift Target Position", liftStates[index-1]);
+    }
         
     public void freeLift(double yStick){
         if(yStick > 0.1 || yStick < -0.1){ //0.2 to avoid lifting elevator while driving error
@@ -41,15 +67,15 @@ public class lift extends SubsystemBase{
 
         if(input1){
             index-=1;
-            if(index >= 0){
-                index+=1;
+            if(index <= 0){
+                index = 1;
             }
         }
 
         else if(input2){
            index+=1;
-           if(index <= 5){
-            index-=1;
+           if(index >= 5){
+                index = 4;
            }
         }
 
@@ -57,12 +83,13 @@ public class lift extends SubsystemBase{
             liftMotor.set(0);
         }
 
-        liftPID(-1);
+        liftPID(index-1);
         SmartDashboard.putNumber("index :", index);
     }
 
     public void liftPID(int state) {
         double oPosition = liftMotor.getPosition().getValueAsDouble(); 
+        SmartDashboard.putNumber("Lift Position",oPosition);
         double setAngle = liftStates[state];
         double calcAngle = (oPosition/2048)*360;
         //multiply set angle by # of roations which is (armCoder ticks/ DPP) then multiply the target angle to get the co terminal equivilent
