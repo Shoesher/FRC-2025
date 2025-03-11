@@ -19,9 +19,7 @@ public class lift extends SubsystemBase{
     private double liftStates[] = {0, 1440, 2160, 3240}; //temporary value while true encoder values are determines
     // private TalonFXConfiguration liftConfig;
     private int index = 1;
-    double kP = 0.025;
-    double kI = 0;
-    double kD = 0;
+
 
     private lift(){
         liftMotor = new TalonFX(7);  
@@ -34,16 +32,16 @@ public class lift extends SubsystemBase{
         SendableRegistry.setName(cPID, "Lift Subsystem", "PID Controller");
         
         // Put initial PID values to SmartDashboard
-        SmartDashboard.putNumber("Lift kP", 0.025);
+        SmartDashboard.putNumber("Lift kP", 0.0006);
         SmartDashboard.putNumber("Lift kI", 0.0);
         SmartDashboard.putNumber("Lift kD", 0.0);
     }                 
     
     public void periodic(){
         // Read PID constants from SmartDashboard
-        kP = SmartDashboard.getNumber("Lift kP", 0.025);
-        kI = SmartDashboard.getNumber("Lift kI", 0.0);
-        kD = SmartDashboard.getNumber("Lift kD", 0.0);
+        double kP = SmartDashboard.getNumber("Lift kP", 0.0006);
+        double kI = SmartDashboard.getNumber("Lift kI", 0.0);
+        double kD = SmartDashboard.getNumber("Lift kD", 0.0);
         
         // Update PID controller with new values
 
