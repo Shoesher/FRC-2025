@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.commands.RobotContainer;
+import frc.robot.commands.RobotContainer;
 import frc.robot.subsystem.aIntake;
 import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
@@ -24,7 +24,8 @@ public class Robot extends TimedRobot {
   public aIntake algae;
   public cIntake coral;
   public lift elevator;
-  public Command getAutonomousCommand;
+  public RobotContainer robotContainer;
+  public Command AutonomousCommand;
   // private VisionSim visionSim;
 
 
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
     algae = aIntake.getInstance();
     coral = cIntake.getInstance();
     elevator = lift.getInstance();
+    robotContainer = new RobotContainer();
     // visionSim = new VisionSim("main", "cameraName");
 
   
@@ -53,8 +55,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    if (getAutonomousCommand != null) {
-      getAutonomousCommand.schedule();
+    AutonomousCommand = robotContainer.getAutonomousCommand();
+
+    if (AutonomousCommand != null) {
+      AutonomousCommand.schedule();
     }
   }
 
@@ -64,8 +68,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if (getAutonomousCommand != null) {
-      getAutonomousCommand.cancel();
+    if (AutonomousCommand != null) {
+      AutonomousCommand.cancel();
     }
   }
 
