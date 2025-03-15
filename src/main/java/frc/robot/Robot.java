@@ -4,9 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
 // import frc.robot.commands.RobotContainer;
@@ -15,7 +15,6 @@ import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
 import frc.robot.subsystem.lift;
-import frc.robot.simulation.VisionSim;
 
 
 public class Robot extends TimedRobot {
@@ -26,7 +25,7 @@ public class Robot extends TimedRobot {
   public cIntake coral;
   public lift elevator;
   public Command getAutonomousCommand;
-  private VisionSim visionSim;
+  // private VisionSim visionSim;
 
 
   @Override
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
     algae = aIntake.getInstance();
     coral = cIntake.getInstance();
     elevator = lift.getInstance();
-    visionSim = new VisionSim("main", "cameraName");
+    // visionSim = new VisionSim("main", "cameraName");
 
   
   }
@@ -46,8 +45,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // Update VisionSim with the new robot pose
-    Pose2d robotPose = drive.getPose(); // Get the updated pose from the drivetrain
-    visionSim.update(robotPose);
+    // Pose2d robotPose = drive.getPose(); // Get the updated pose from the drivetrain
+    // visionSim.update(robotPose);
 
     
   }
