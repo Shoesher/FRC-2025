@@ -4,15 +4,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.RobotContainer;
+// import frc.robot.commands.RobotContainer;
 import frc.robot.subsystem.aIntake;
 import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
 import frc.robot.subsystem.lift;
+import frc.robot.simulation.VisionSim;
+
 
 public class Robot extends TimedRobot {
 
@@ -21,30 +25,38 @@ public class Robot extends TimedRobot {
   public aIntake algae;
   public cIntake coral;
   public lift elevator;
-  public RobotContainer robotContainer;
   public Command getAutonomousCommand;
+  private VisionSim visionSim;
+
 
   @Override
   public void robotInit() {
     drive = drivetrain.getInstance();
-    oi= operatorinterface.getInstance();
+    oi = operatorinterface.getInstance();
     algae = aIntake.getInstance();
     coral = cIntake.getInstance();
     elevator = lift.getInstance();
-    robotContainer = new RobotContainer();
+    visionSim = new VisionSim("main", "cameraName");
+
+  
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    // Update VisionSim with the new robot pose
+    Pose2d robotPose = drive.getPose(); // Get the updated pose from the drivetrain
+    visionSim.update(robotPose);
+
     
   }
 
   @Override
   public void autonomousInit() {
-    if(getAutonomousCommand != null){
+    if (getAutonomousCommand != null) {
       getAutonomousCommand.schedule();
-  }
+    }
   }
 
   @Override
@@ -53,9 +65,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if(getAutonomousCommand != null){
+    if (getAutonomousCommand != null) {
       getAutonomousCommand.cancel();
-  }
+    }
   }
 
   @Override
