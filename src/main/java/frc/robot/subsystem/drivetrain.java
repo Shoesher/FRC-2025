@@ -26,7 +26,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 // import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 public class drivetrain extends SubsystemBase {
 
@@ -50,26 +50,26 @@ public class drivetrain extends SubsystemBase {
     private DifferentialDriveKinematics kinematics;
     private final PIDController leftPID;
     private final PIDController rightPID;
-    // private final SimpleMotorFeedforward feedforward;
+    private final SimpleMotorFeedforward feedforward;
     private RobotConfig config;
     
     private drivetrain(){
-        leftfront = new SparkMax(3, MotorType.kBrushless);
-        leftrear = new SparkMax(4, MotorType.kBrushless);
-        rightfront = new SparkMax(1, MotorType.kBrushless);
-        rightrear = new SparkMax(2, MotorType.kBrushless);
+        leftfront = new SparkMax(4, MotorType.kBrushless);
+        leftrear = new SparkMax(3, MotorType.kBrushless);
+        rightfront = new SparkMax(2, MotorType.kBrushless);
+        rightrear = new SparkMax(1, MotorType.kBrushless);
        
         //PathPlanner
         autoBuilder = new AutoBuilder();
         gyro = new Pigeon2(10);
         rightEncoder = rightfront.getEncoder();
         leftEncoder = leftfront.getEncoder();
-        odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), leftEncoder.getPosition(), rightEncoder.getPosition());
+        odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), getLeftDistance(), getRightDistance());
         autoBuilder = new AutoBuilder();
         kinematics = new DifferentialDriveKinematics(0.608);
-        leftPID = new PIDController(0.001, 0.2, 0.4);
-        rightPID = new PIDController(0.001, 0.2, 0.4);
-        // feedforward = new SimpleMotorFeedforward(1, 3);
+        leftPID = new PIDController(0.001, 0, 0);
+        rightPID = new PIDController(0.001, 0, 0);
+        feedforward = new SimpleMotorFeedforward(0.2, 2.16, 0.39);
         
 
         //motor configuration
@@ -78,14 +78,15 @@ public class drivetrain extends SubsystemBase {
         SparkMaxConfig config3 = new SparkMaxConfig();
         SparkMaxConfig config4 = new SparkMaxConfig();
 
-        config1.inverted(true);
-        config2.inverted(true).follow(3);
-        config4.follow(1);
-       
         leftfront.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         leftrear.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        config1.inverted(true);
+        config2.inverted(true).follow(4);
+        config3.inverted(false);
+        config4.inverted(false).follow(2);
 
         //pathplanner
     
@@ -119,7 +120,8 @@ public class drivetrain extends SubsystemBase {
 
     }
 
-    //Drive Methods
+    //Teleop Drivetrain code
+
     private void Stopdrive() {
         leftfront.set(0);
         rightfront.set(0);
@@ -172,12 +174,7 @@ public class drivetrain extends SubsystemBase {
         }
     }
     
-        //note that the encoder spin rate values will be off because it's not connected to the shaft at the end of the gearbox 
-        //so the code might have to account for gear ratio
-        
-        // //auto methods:
-    
-        // //Gyro Stuff
+    //auto methods:
     
         //getPosition (pose)
         public Pose2d getPose(){
@@ -188,36 +185,47 @@ public class drivetrain extends SubsystemBase {
             leftEncoder.setPosition(0);
             rightEncoder.setPosition(0);
             gyro.reset();
-            odometry.resetPosition(gyro.getRotation2d() ,leftEncoder.getPosition(), rightEncoder.getPosition(), pose);
+            odometry.resetPosition(gyro.getRotation2d() , 0, 0, pose);
         }
 
-        //Kinematics stuff
-        //get Chasis speed (getCurrentSpeeds) 
-        
+        //get Chasis speed (getCurrentSpeeds)  
         public ChassisSpeeds getCurrentSpeeds() {
-            return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds((leftEncoder.getVelocity() * 18.85)/60, rightEncoder.getVelocity()/60));
+            return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftSpeedMetersPerSecond(), getRightSpeedMetersPerSecond()));
         }
         //drive method
-        public void drive(ChassisSpeeds chassisSpeeds) {
-            DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
+        public void drive(ChassisSpeeds speeds) {
+            DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
             setSpeeds(wheelSpeeds);
         }
+
         //set speeds
         public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-            // final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
-            // final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
+            final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
+            final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
         
-            final double leftOutput = leftPID.calculate(leftEncoder.getVelocity(), speeds.leftMetersPerSecond);
-            final double rightOutput = rightPID.calculate(rightEncoder.getVelocity(), speeds.rightMetersPerSecond);
+            final double leftOutput = leftPID.calculate(getLeftSpeedMetersPerSecond(), speeds.leftMetersPerSecond);
+            final double rightOutput = rightPID.calculate(getRightSpeedMetersPerSecond(), speeds.rightMetersPerSecond);
         
-            // leftfront.setVoltage(leftOutput + leftFeedforward);
-            // rightfront.setVoltage(rightOutput + rightFeedforward);
-
-             leftfront.setVoltage(leftOutput);
-             rightfront.setVoltage(rightOutput);
+            leftfront.setVoltage(leftOutput + leftFeedforward);
+            rightfront.setVoltage(-(rightOutput + rightFeedforward));
         }
 
+        //Calculations
+        private double getLeftDistance(){
+            return (leftEncoder.getPosition()/8.450)*0.478;
+        }
 
+        private double getRightDistance(){
+            return (rightEncoder.getPosition()/8.450)*0.478;
+        }
+
+        private double getLeftSpeedMetersPerSecond(){
+            return (leftEncoder.getVelocity()/ 60 / 8.450)*0.478;
+        }
+
+        private double getRightSpeedMetersPerSecond(){
+            return (rightEncoder.getVelocity()/ 60 / 8.450)*0.478;
+        }
 
     //sends to operator interface
     public static drivetrain getInstance(){

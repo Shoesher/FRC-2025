@@ -17,10 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //code has the following dependencies
 
 //PID has to be adjusted
-//encoder value may be weird after more uses because it is never reset
 //May have to use co-terminal angle logic for the target angle as motor gains more roations for the same angles
 public class cIntake extends SubsystemBase {
-
     private static cIntake cIntake = null; //put this if you want the robot to periodically call this
 
     private SparkMax armMotor;
@@ -29,7 +27,7 @@ public class cIntake extends SubsystemBase {
     //arm initialiation
     private final PIDController cPID;
     private RelativeEncoder armCoder;
-    private double encoderDPP = 42;
+    // private double encoderDPP = 42;
     private double armStates[] = {0,35,80,-80}; //proccessing angle to be determined, same with intake angle
     private int position = 1;
 
@@ -56,7 +54,6 @@ public class cIntake extends SubsystemBase {
     }
 
     public void setArm(boolean button1, boolean button2, boolean button3, boolean button4){
-
         if(button1){
             armPID(0);
             SmartDashboard.putNumber("position :", position);
@@ -76,16 +73,13 @@ public class cIntake extends SubsystemBase {
         else{
             armMotor.set(0);
         }
-
         //The position value minus one will be the correct state value for the armPID to recieve the correct setAngle
         armPID(position-1);
     }
 
     public void armPID(int state){
         double setAngle = armStates[state];
-        double calcAngle = (armCoder.getPosition()/encoderDPP)*360;
-        //multiply set angle by # of roations which is (armCoder ticks/ DPP) then multiply the target angle to get the co terminal equivilent
-        //if the PID is having trouble try above solution
+        double calcAngle = (armCoder.getPosition()/60)*360;
         double calcPID = cPID.calculate(calcAngle, setAngle);
         armMotor.set(calcPID);
     }
