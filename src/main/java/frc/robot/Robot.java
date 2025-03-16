@@ -10,20 +10,22 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.RobotContainer;
-import frc.robot.subsystem.aIntake;
+// import frc.robot.subsystem.aIntake;
 import frc.robot.subsystem.cIntake;
 import frc.robot.subsystem.drivetrain;
 import frc.robot.subsystem.operatorinterface;
 import frc.robot.subsystem.lift;
+import frc.robot.subsystem.LEDS;
 
 
 public class Robot extends TimedRobot {
 
   public drivetrain drive;
   public operatorinterface oi;
-  public aIntake algae;
+  // public aIntake algae;
   public cIntake coral;
   public lift elevator;
+  public LEDS led;
   public RobotContainer robotContainer;
   public Command AutonomousCommand;
   // private VisionSim visionSim;
@@ -33,9 +35,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drive = drivetrain.getInstance();
     oi = operatorinterface.getInstance();
-    algae = aIntake.getInstance();
-    coral = cIntake.getInstance();
+    // algae = aIntake.getInstance();
     elevator = lift.getInstance();
+    coral = cIntake.getInstance();
+    led = LEDS.getInstance();
+    
     robotContainer = new RobotContainer();
     // visionSim = new VisionSim("main", "cameraName");
 
@@ -64,6 +68,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    led.AutonWave();
   }
 
   @Override
@@ -75,6 +80,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    led.Wave();
   }
 
   @Override

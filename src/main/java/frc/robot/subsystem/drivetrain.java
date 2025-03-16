@@ -129,7 +129,6 @@ public class drivetrain extends SubsystemBase {
 
     private double SpeedMode(boolean Lbumper, boolean Rbumper){
         //gear1 = 25% speed, gear2 = 50%, gear3 = 75%, gear4 = 100%
-        //keep gear at 3 by default make a constant switch case statment that sets returns a mode based the speed value
     
         //using bumpers to increase or decrease gear
         if (Lbumper) {
@@ -225,6 +224,12 @@ public class drivetrain extends SubsystemBase {
 
         private double getRightSpeedMetersPerSecond(){
             return (rightEncoder.getVelocity()/ 60 / 8.450)*0.478;
+        }
+
+        //Update Gyros
+        @Override
+        public void periodic() {
+            odometry.update(gyro.getRotation2d(),getLeftDistance(),getRightDistance());
         }
 
     //sends to operator interface

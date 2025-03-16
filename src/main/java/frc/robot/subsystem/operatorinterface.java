@@ -8,7 +8,7 @@ public class operatorinterface extends SubsystemBase {
     private XboxController controller;
     private XboxController controller2;
     private drivetrain drive = drivetrain.getInstance();
-    private aIntake algae = aIntake.getInstance();
+    // private aIntake algae = aIntake.getInstance();
     private cIntake coral = cIntake.getInstance();
     private lift elevator = lift.getInstance();
     private climber climb = climber.getInstance();
@@ -25,9 +25,9 @@ public class operatorinterface extends SubsystemBase {
         drive.Drivecode(controller.getLeftY(), controller.getRightX(), controller.getLeftBumperButton(), controller.getRightBumperButton());
     }
 
-    private void updateAlgae(){
-        algae.intakeAlgae(controller2.getLeftTriggerAxis(), controller2.getRightTriggerAxis());
-    }
+    // private void updateAlgae(){
+    //     algae.intakeAlgae(controller2.getLeftTriggerAxis(), controller2.getRightTriggerAxis());
+    // }
 
     private void updateCoral(){
         //coral.freeArm();
@@ -47,11 +47,10 @@ public class operatorinterface extends SubsystemBase {
     public void periodic(){
         updateDrive();
         updateCoral();
-        updateAlgae();
+        // updateAlgae();
         updateLift();
         updateClimb();
     }
-    
     
     public static operatorinterface getInstance(){
         if (oi == null){

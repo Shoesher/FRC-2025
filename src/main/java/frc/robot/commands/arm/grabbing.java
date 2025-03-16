@@ -16,7 +16,7 @@ public class grabbing extends Command{
     }
 
     public void execute(){
-        arm.armPID(0);
+        arm.armPID(3);
     }
 
     @Override

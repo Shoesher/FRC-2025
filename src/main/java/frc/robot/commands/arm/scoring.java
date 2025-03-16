@@ -15,7 +15,7 @@ public class scoring extends Command{
     }
 
     public void execute(){
-        arm.armPID(2);
+        arm.armPID(1);
     }
 
     @Override

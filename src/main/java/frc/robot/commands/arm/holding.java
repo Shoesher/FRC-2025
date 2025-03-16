@@ -15,7 +15,7 @@ public class holding extends Command{
     }
 
     public void execute(){
-        arm.armPID(3);
+        arm.armPID(0);
     }
 
     @Override

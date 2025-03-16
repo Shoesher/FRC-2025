@@ -15,7 +15,7 @@ public class dAlgae extends Command{
     }
 
     public void execute(){
-        arm.armPID(1);
+        arm.armPID(2);
     }
 
     @Override
