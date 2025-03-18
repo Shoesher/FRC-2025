@@ -78,15 +78,15 @@ public class drivetrain extends SubsystemBase {
         SparkMaxConfig config3 = new SparkMaxConfig();
         SparkMaxConfig config4 = new SparkMaxConfig();
 
-        leftfront.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        leftrear.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         config1.inverted(true);
         config2.inverted(true).follow(4);
         config3.inverted(false);
         config4.inverted(false).follow(2);
+
+        leftfront.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        leftrear.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         //pathplanner
     
@@ -209,27 +209,32 @@ public class drivetrain extends SubsystemBase {
             rightfront.setVoltage(-(rightOutput + rightFeedforward));
         }
 
+        public void setVoltage(double leftVoltage, double rightVoltage){
+            leftfront.setVoltage(leftVoltage);
+            rightfront.setVoltage(rightVoltage);
+        }
+
         //Calculations
-        private double getLeftDistance(){
+        public double getLeftDistance(){
             return (leftEncoder.getPosition()/8.450)*0.478;
         }
 
-        private double getRightDistance(){
+        public double getRightDistance(){
             return (rightEncoder.getPosition()/8.450)*0.478;
         }
 
-        private double getLeftSpeedMetersPerSecond(){
+        public double getLeftSpeedMetersPerSecond(){
             return (leftEncoder.getVelocity()/ 60 / 8.450)*0.478;
         }
 
-        private double getRightSpeedMetersPerSecond(){
+        public double getRightSpeedMetersPerSecond(){
             return (rightEncoder.getVelocity()/ 60 / 8.450)*0.478;
         }
 
         //Update Gyros
         @Override
         public void periodic() {
-            odometry.update(gyro.getRotation2d(),getLeftDistance(),getRightDistance());
+            odometry.update(gyro.getRotation2d(), getLeftDistance(), getRightDistance());
         }
 
     //sends to operator interface

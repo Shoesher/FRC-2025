@@ -21,6 +21,8 @@ import frc.robot.commands.arm.scoring;
 import frc.robot.commands.arm.grabbing;
 import frc.robot.commands.arm.holding;
 import frc.robot.commands.arm.dAlgae;
+//Emergancy drive command
+import frc.robot.commands.drive.forwards;
 
 public class RobotContainer {
       private final SendableChooser<Command> autoChooser;
@@ -34,6 +36,8 @@ public class RobotContainer {
       private grabbing grab;
       private holding hold;
       private dAlgae top;
+      //drive
+      private forwards driveForward;
 
       public RobotContainer(){
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -47,10 +51,16 @@ public class RobotContainer {
         NamedCommands.registerCommand("score", score);
         NamedCommands.registerCommand("armDown", grab);
         NamedCommands.registerCommand("armUp", top);
+
+        
       }
 
       public Command getAutonomousCommand(){
         return autoChooser.getSelected();
+      }
+
+      public Command driveF(){
+        return driveForward;
       }
 
 }    
