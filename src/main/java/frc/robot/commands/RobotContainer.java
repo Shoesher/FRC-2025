@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 //SmartDashboard AutoChooser
 import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj.Timer;
 // import com.pathplanner.lib.path.PathPlannerPath;
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -61,6 +63,7 @@ public class RobotContainer {
       }
 
       public Command driveF(){
+        Timer.delay(2);
         return new forwards(6, 6, 1, 1);
       }
 
