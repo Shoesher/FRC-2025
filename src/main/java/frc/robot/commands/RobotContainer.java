@@ -37,7 +37,6 @@ public class RobotContainer {
       private holding hold;
       private dAlgae top;
       //drive
-      private forwards driveForward;
 
       public RobotContainer(){
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -60,7 +59,7 @@ public class RobotContainer {
       }
 
       public Command driveF(){
-        return driveForward;
+        return new forwards(6, 6, 1, 1);
       }
 
 }    

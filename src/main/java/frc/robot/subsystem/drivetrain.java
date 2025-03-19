@@ -195,6 +195,7 @@ public class drivetrain extends SubsystemBase {
         public void drive(ChassisSpeeds speeds) {
             DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
             setSpeeds(wheelSpeeds);
+            // setRate(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
         }
 
         //set speeds
@@ -208,6 +209,17 @@ public class drivetrain extends SubsystemBase {
             leftfront.setVoltage(leftOutput + leftFeedforward);
             rightfront.setVoltage(-(rightOutput + rightFeedforward));
         }
+
+        // public void setRate(double leftSpeed, double rightSpeed) {
+        //     final double leftFeedforward = feedforward.calculate(leftSpeed);
+        //     final double rightFeedforward = feedforward.calculate(rightSpeed);
+        
+        //     final double leftOutput = leftPID.calculate(getLeftSpeedMetersPerSecond(), leftSpeed);
+        //     final double rightOutput = rightPID.calculate(getRightSpeedMetersPerSecond(), rightSpeed);
+        
+        //     leftfront.setVoltage(leftOutput + leftFeedforward);
+        //     rightfront.setVoltage(-(rightOutput + rightFeedforward));
+        // }
 
         public void setVoltage(double leftVoltage, double rightVoltage){
             leftfront.setVoltage(leftVoltage);
