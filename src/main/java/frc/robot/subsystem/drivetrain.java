@@ -10,9 +10,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 // pathplanner
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPLTVController;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.config.RobotConfig;
+// import com.pathplanner.lib.controllers.PPLTVController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -46,12 +46,12 @@ public class drivetrain extends SubsystemBase {
     private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
     private DifferentialDriveOdometry odometry;
-    public AutoBuilder autoBuilder;
+    // public AutoBuilder autoBuilder;
     private DifferentialDriveKinematics kinematics;
     private final PIDController leftPID;
     private final PIDController rightPID;
     private final SimpleMotorFeedforward feedforward;
-    private RobotConfig config;
+    // private RobotConfig config;
     
     private drivetrain(){
         leftfront = new SparkMax(4, MotorType.kBrushless);
@@ -60,12 +60,12 @@ public class drivetrain extends SubsystemBase {
         rightrear = new SparkMax(1, MotorType.kBrushless);
        
         //PathPlanner
-        autoBuilder = new AutoBuilder();
+        // autoBuilder = new AutoBuilder();
         gyro = new Pigeon2(10);
         rightEncoder = rightfront.getEncoder();
         leftEncoder = leftfront.getEncoder();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), getLeftDistance(), getRightDistance());
-        autoBuilder = new AutoBuilder();
+        // autoBuilder = new AutoBuilder();
         kinematics = new DifferentialDriveKinematics(0.608);
         leftPID = new PIDController(0.001, 0, 0);
         rightPID = new PIDController(0.001, 0, 0);
@@ -87,36 +87,36 @@ public class drivetrain extends SubsystemBase {
         leftrear.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+    
         //pathplanner
     
-        try{
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    //     try{
+    //         config = RobotConfig.fromGUISettings();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
 
-        // Configure AutoBuilder last
-        AutoBuilder.configure(
-            this::getPose, // Robot pose supplier
-            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getCurrentSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
-            config, // The robot configuration
-            () -> {
-                // Boolean supplier that controls when the path will be mirrored for the red alliance
-                // This will flip the path being followed to the red side of the field.
-                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+    //     // Configure AutoBuilder last
+    //     AutoBuilder.configure(
+    //         this::getPose, // Robot pose supplier
+    //         this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+    //         this::getCurrentSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //         (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+    //         new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
+    //         config, // The robot configuration
+    //         () -> {
+    //             // Boolean supplier that controls when the path will be mirrored for the red alliance
+    //             // This will flip the path being followed to the red side of the field.
+    //             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-            }
-                return false;
-                },
-                this // Reference to this subsystem to set requirements
-        );
+    //         var alliance = DriverStation.getAlliance();
+    //         if (alliance.isPresent()) {
+    //             return alliance.get() == DriverStation.Alliance.Red;
+    //         }
+    //             return false;
+    //             },
+    //             this // Reference to this subsystem to set requirements
+    //     );
 
     }
 
