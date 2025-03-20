@@ -207,7 +207,7 @@ public class drivetrain extends SubsystemBase {
             final double rightOutput = rightPID.calculate(getRightSpeedMetersPerSecond(), speeds.rightMetersPerSecond);
         
             leftfront.setVoltage(leftOutput + leftFeedforward);
-            rightfront.setVoltage(-(rightOutput + rightFeedforward));
+            rightfront.setVoltage(rightOutput + rightFeedforward);
         }
 
         // public void setRate(double leftSpeed, double rightSpeed) {
