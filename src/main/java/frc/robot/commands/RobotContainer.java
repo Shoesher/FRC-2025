@@ -81,14 +81,18 @@ public class RobotContainer {
       }
 
       public Command scoreL2(double time){
-        return new SequentialCommandGroup(score, new WaitCommand(time), L2, new WaitCommand(time), grab);
+        return new SequentialCommandGroup(score, new WaitCommand(time), L2);
       }
 
       public Command scoreL3(double time){
-        return new SequentialCommandGroup(score, new WaitCommand(time), L3, new WaitCommand(time), grab);
+        return new SequentialCommandGroup(score, new WaitCommand(time), L3);
       }
 
       public Command scoreL4(double time){
-        return new SequentialCommandGroup(score, new WaitCommand(time), L4, new WaitCommand(time), grab);
+        return new SequentialCommandGroup(score, new WaitCommand(time), L4);
+      }
+
+      public Command confirm(){
+        return grab;
       }
 }    
