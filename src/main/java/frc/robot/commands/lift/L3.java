@@ -4,10 +4,13 @@ import frc.robot.subsystem.lift;
 
 public class L3 extends Command{
     private final lift elevator;
+    private double currentAngle;
+    private double targetAngle;
 
     public L3(lift elevator){
         this.elevator = elevator;
         addRequirements(elevator);
+        targetAngle = 2160;
     }   
 
     @Override
@@ -16,7 +19,16 @@ public class L3 extends Command{
     }
 
     public void execute(){
-        elevator.liftPID(2);
+        currentAngle = elevator.getAngle()*360;
+        if (currentAngle < targetAngle){
+            elevator.freeLift(0.25);
+        }
+        else if(currentAngle > targetAngle){
+            elevator.freeLift(-0.25);
+        }
+        else{
+            elevator.freeLift(0);
+        }
     }
 
     @Override

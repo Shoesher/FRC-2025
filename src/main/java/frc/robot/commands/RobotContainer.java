@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 //importing commands
@@ -69,6 +70,10 @@ public class RobotContainer {
 
       public Command timedAuton(double time) { 
         return new ParallelRaceGroup(driveF(), new WaitCommand(time));
+      }
+
+      public Command grabCoral(double time){
+        return new SequentialCommandGroup(L2, new WaitCommand(time), grab, new WaitCommand(time), L1);
       }
 
 }    

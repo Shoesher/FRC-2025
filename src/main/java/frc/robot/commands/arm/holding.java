@@ -4,10 +4,13 @@ import frc.robot.subsystem.cIntake;
 
 public class holding extends Command{
     private final cIntake arm;
+    private double targetAngle;
+    private double currentAngle;
 
     public holding(cIntake arm){
         this.arm = arm;
         addRequirements(arm);
+        targetAngle = 80;
     }
     @Override
     public void initialize(){
@@ -15,7 +18,16 @@ public class holding extends Command{
     }
 
     public void execute(){
-        arm.armPID(0);
+        currentAngle = arm.getAngle()*360;
+        if (currentAngle < targetAngle){
+            arm.freeArm(true, false);
+        }
+        else if(currentAngle > targetAngle){
+            arm.freeArm(false, true);
+        }
+        else{
+            arm.freeArm(false, false);
+        }
     }
 
     @Override
