@@ -40,7 +40,7 @@ public class RobotContainer {
       private scoring score;
       private grabbing grab;
       private holding hold;
-      private dAlgae top;
+      private dAlgae dAlgae;
       //drive
 
       public RobotContainer(){
@@ -76,4 +76,19 @@ public class RobotContainer {
         return new SequentialCommandGroup(L2, new WaitCommand(time), grab, new WaitCommand(time), L1);
       }
 
+      public Command scoreL1(double time){
+        return new SequentialCommandGroup(L1, new WaitCommand(time), dAlgae);
+      }
+
+      public Command scoreL2(double time){
+        return new SequentialCommandGroup(score, new WaitCommand(time), L2, new WaitCommand(time), grab);
+      }
+
+      public Command scoreL3(double time){
+        return new SequentialCommandGroup(score, new WaitCommand(time), L3, new WaitCommand(time), grab);
+      }
+
+      public Command scoreL4(double time){
+        return new SequentialCommandGroup(score, new WaitCommand(time), L4, new WaitCommand(time), grab);
+      }
 }    
