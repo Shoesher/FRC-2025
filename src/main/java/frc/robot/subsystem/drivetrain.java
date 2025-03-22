@@ -10,23 +10,23 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 // pathplanner
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPLTVController;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.config.RobotConfig;
+// import com.pathplanner.lib.controllers.PPLTVController;
 
-import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+// import edu.wpi.first.math.kinematics.ChassisSpeeds;
+// import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+// import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 // import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+// import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 public class drivetrain extends SubsystemBase {
 
@@ -46,12 +46,12 @@ public class drivetrain extends SubsystemBase {
     private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
     private DifferentialDriveOdometry odometry;
-    public AutoBuilder autoBuilder;
-    private DifferentialDriveKinematics kinematics;
-    private final PIDController leftPID;
-    private final PIDController rightPID;
-    private final SimpleMotorFeedforward feedforward;
-    private RobotConfig config;
+    // public AutoBuilder autoBuilder;
+    // private DifferentialDriveKinematics kinematics;
+    // private final PIDController leftPID;
+    // private final PIDController rightPID;
+    // private final SimpleMotorFeedforward feedforward;
+    // private RobotConfig config;
     
     private drivetrain(){
         leftfront = new SparkMax(4, MotorType.kBrushless);
@@ -60,16 +60,16 @@ public class drivetrain extends SubsystemBase {
         rightrear = new SparkMax(1, MotorType.kBrushless);
        
         //PathPlanner
-        autoBuilder = new AutoBuilder();
+        // autoBuilder = new AutoBuilder();
         gyro = new Pigeon2(10);
         rightEncoder = rightfront.getEncoder();
         leftEncoder = leftfront.getEncoder();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), getLeftDistance(), getRightDistance());
-        autoBuilder = new AutoBuilder();
-        kinematics = new DifferentialDriveKinematics(0.608);
-        leftPID = new PIDController(0.001, 0, 0);
-        rightPID = new PIDController(0.001, 0, 0);
-        feedforward = new SimpleMotorFeedforward(0.2, 2.16, 0.39);
+        // autoBuilder = new AutoBuilder();
+        // kinematics = new DifferentialDriveKinematics(0.608);
+        // leftPID = new PIDController(0.001, 0, 0);
+        // rightPID = new PIDController(0.001, 0, 0);
+        // feedforward = new SimpleMotorFeedforward(0.2, 2.16, 0.39);
         
 
         //motor configuration
@@ -90,33 +90,33 @@ public class drivetrain extends SubsystemBase {
 
         //pathplanner
     
-        try{
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try{
+        //     config = RobotConfig.fromGUISettings();
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
 
-        // Configure AutoBuilder last
-        AutoBuilder.configure(
-            this::getPose, // Robot pose supplier
-            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getCurrentSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
-            config, // The robot configuration
-            () -> {
-                // Boolean supplier that controls when the path will be mirrored for the red alliance
-                // This will flip the path being followed to the red side of the field.
-                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        // // Configure AutoBuilder last
+        // AutoBuilder.configure(
+        //     this::getPose, // Robot pose supplier
+        //     this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        //     this::getCurrentSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        //     (speeds, feedforwards) -> drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+        //     new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
+        //     config, // The robot configuration
+        //     () -> {
+        //         // Boolean supplier that controls when the path will be mirrored for the red alliance
+        //         // This will flip the path being followed to the red side of the field.
+        //         // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-            }
-                return false;
-                },
-                this // Reference to this subsystem to set requirements
-        );
+        //     var alliance = DriverStation.getAlliance();
+        //     if (alliance.isPresent()) {
+        //         return alliance.get() == DriverStation.Alliance.Red;
+        //     }
+        //         return false;
+        //         },
+        //         this // Reference to this subsystem to set requirements
+        // );
 
     }
 
@@ -166,8 +166,8 @@ public class drivetrain extends SubsystemBase {
         double gear = SpeedMode(LeftBumper, RightBumper);
 
         if(Math.abs(Leftjoy) > 0.1|| Math.abs(Rightjoy) > 0.1){
-            leftfront.set((Leftjoy + Rightjoy)*gear);
-            rightfront.set((Leftjoy - Rightjoy)*gear);
+            leftfront.set((Leftjoy - Rightjoy)*gear);
+            rightfront.set((Leftjoy + Rightjoy)*gear);
         } else{
             Stopdrive();
         }
@@ -176,38 +176,38 @@ public class drivetrain extends SubsystemBase {
     //auto methods:
     
         //getPosition (pose)
-        public Pose2d getPose(){
-            return odometry.getPoseMeters();
-        }
-        //resetPosition (reset pose)
-        public void resetPose(Pose2d pose) {
-            leftEncoder.setPosition(0);
-            rightEncoder.setPosition(0);
-            gyro.reset();
-            odometry.resetPosition(gyro.getRotation2d() , 0, 0, pose);
-        }
+        // public Pose2d getPose(){
+        //     return odometry.getPoseMeters();
+        // }
+        // //resetPosition (reset pose)
+        // public void resetPose(Pose2d pose) {
+        //     leftEncoder.setPosition(0);
+        //     rightEncoder.setPosition(0);
+        //     gyro.reset();
+        //     odometry.resetPosition(gyro.getRotation2d() , 0, 0, pose);
+        // }
 
-        //get Chasis speed (getCurrentSpeeds)  
-        public ChassisSpeeds getCurrentSpeeds() {
-            return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftSpeedMetersPerSecond(), getRightSpeedMetersPerSecond()));
-        }
-        //drive method
-        public void drive(ChassisSpeeds speeds) {
-            DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-            setSpeeds(wheelSpeeds);
-        }
+        // //get Chasis speed (getCurrentSpeeds)  
+        // public ChassisSpeeds getCurrentSpeeds() {
+        //     return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftSpeedMetersPerSecond(), getRightSpeedMetersPerSecond()));
+        // }
+        // //drive method
+        // public void drive(ChassisSpeeds speeds) {
+        //     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
+        //     setSpeeds(wheelSpeeds);
+        // }
 
-        //set speeds
-        public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-            final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
-            final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
+        // //set speeds
+        // public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+        //     final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
+        //     final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
         
-            final double leftOutput = leftPID.calculate(getLeftSpeedMetersPerSecond(), speeds.leftMetersPerSecond);
-            final double rightOutput = rightPID.calculate(getRightSpeedMetersPerSecond(), speeds.rightMetersPerSecond);
+        //     final double leftOutput = leftPID.calculate(getLeftSpeedMetersPerSecond(), speeds.leftMetersPerSecond);
+        //     final double rightOutput = rightPID.calculate(getRightSpeedMetersPerSecond(), speeds.rightMetersPerSecond);
         
-            leftfront.setVoltage(leftOutput + leftFeedforward);
-            rightfront.setVoltage(-(rightOutput + rightFeedforward));
-        }
+        //     leftfront.setVoltage(leftOutput + leftFeedforward);
+        //     rightfront.setVoltage(-(rightOutput + rightFeedforward));
+        // }
 
         public void setVoltage(double leftVoltage, double rightVoltage){
             leftfront.setVoltage(leftVoltage);

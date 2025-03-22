@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    AutonomousCommand = robotContainer.getAutonomousCommand();
+    AutonomousCommand = robotContainer.driveF();
 
     if (AutonomousCommand != null) {
       AutonomousCommand.schedule();

@@ -8,7 +8,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class lift extends SubsystemBase{
@@ -27,35 +26,11 @@ public class lift extends SubsystemBase{
         liftMotor = new TalonFX(7);  
         cPID = new PIDController(1, 0, 0);
         eFeedforward = new ElevatorFeedforward(0.027, 0.27, 9.99, 0.027);
-        // liftConfig = new TalonFXConfiguration();
-        // liftConfig.withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
-
-        // Register devices to SmartDashboard (SendableRegistry)
-        SendableRegistry.setName(liftMotor, "Lift Subsystem", "Lift Motor");
-        SendableRegistry.setName(cPID, "Lift Subsystem", "PID Controller");
-        
-        // Put initial PID values to SmartDashboard
-        SmartDashboard.putNumber("Lift kP", 0.0006);
-        SmartDashboard.putNumber("Lift kI", 0.0);
-        SmartDashboard.putNumber("Lift kD", 0.0);
     }                 
-    
-    public void periodic(){
-        // Read PID constants from SmartDashboard
-        double kP = SmartDashboard.getNumber("Lift kP", 0.0006);
-        double kI = SmartDashboard.getNumber("Lift kI", 0.0);
-        double kD = SmartDashboard.getNumber("Lift kD", 0.0);
-        
-        // Update PID controller with new values
-
-        cPID.setPID(kP, kI, kD);
-        
-        SmartDashboard.putNumber("Lift Target Position", liftStates[index-1]);
-    }
         
     public void freeLift(double yStick){
         if(yStick > 0.1){ 
-            liftMotor.set(yStick*0.25);
+            liftMotor.set(yStick*0.45);
         }
         else if(yStick < -0.1){
             liftMotor.set(yStick*0.4);
@@ -64,6 +39,10 @@ public class lift extends SubsystemBase{
             liftMotor.set(0);
         }
     }   
+
+    public double getAngle(){
+        return ((liftMotor.getPosition().getValueAsDouble()/16)*360);
+    }
 
     //this requires the size of the sprocket on the gear to calculate needed encoder values
     //also requires use of pov to use the Dpad
@@ -91,7 +70,6 @@ public class lift extends SubsystemBase{
 
     public void liftPID(int state) {
         double oPosition = liftMotor.getPosition().getValueAsDouble(); 
-        SmartDashboard.putNumber("Lift Position",oPosition);
         double setAngle = liftStates[state];
         double calcAngle = (oPosition/16)*360;
         double velocity = liftMotor.getVelocity().getValueAsDouble();

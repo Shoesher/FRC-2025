@@ -41,7 +41,7 @@ public class LEDS extends SubsystemBase{
     //Wave effect during teleop
     public void Wave(){
         //Initialization for this pattern
-        base = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kCyan, Color.kBlue);
+        base = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kViolet, Color.kCyan);
         pattern = base.breathe(Seconds.of(2));
         //Apply effect
         pattern.applyTo(Buffer);

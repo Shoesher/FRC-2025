@@ -43,14 +43,18 @@ public class cIntake extends SubsystemBase {
 
     public void freeArm(boolean button1, boolean button2){
         if(button1){
-            armMotor.set(0.15);
+            armMotor.set(0.2);
         }
         else if(button2){
-            armMotor.set(-0.15);
+            armMotor.set(-0.2);
         }
         else{
             armMotor.set(0);
         }
+    }
+
+    public double getAngle(){
+        return ((armCoder.getPosition()/60)*360);
     }
 
     public void setArm(boolean button1, boolean button2, boolean button3, boolean button4){
