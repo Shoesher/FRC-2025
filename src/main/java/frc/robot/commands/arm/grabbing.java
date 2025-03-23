@@ -4,6 +4,8 @@ import frc.robot.subsystem.cIntake;
 
 public class grabbing extends Command{
     private final cIntake arm;
+    private double targetAngle;
+    private double currentAngle;
     private double currentAngle;
     private double targetAngle;
 
@@ -12,13 +14,22 @@ public class grabbing extends Command{
         addRequirements(arm);
         targetAngle = -80;
     }
-
     @Override
     public void initialize(){
-
+        
     }
 
     public void execute(){
+        currentAngle = arm.getAngle()*360;
+        if (currentAngle < targetAngle){
+            arm.freeArm(true, false);
+        }
+        else if(currentAngle > targetAngle){
+            arm.freeArm(false, true);
+        }
+        else{
+            arm.freeArm(false, false);
+        }
         currentAngle = arm.getAngle()*360;
         if (currentAngle < targetAngle-2){
             arm.freeArm(true, false);

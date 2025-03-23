@@ -54,7 +54,7 @@ public class cIntake extends SubsystemBase {
     }
 
     public double getAngle(){
-        return ((armCoder.getPosition()/60)*360);
+        return (armCoder.getPosition())/60;
     }
 
     public void setArm(boolean button1, boolean button2, boolean button3, boolean button4){

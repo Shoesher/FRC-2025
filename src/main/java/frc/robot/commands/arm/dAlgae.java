@@ -4,8 +4,8 @@ import frc.robot.subsystem.cIntake;
 
 public class dAlgae extends Command{
     private final cIntake arm;
-    private double currentAngle;
     private double targetAngle;
+    private double currentAngle;
 
     public dAlgae(cIntake arm){
         this.arm = arm;
@@ -18,16 +18,7 @@ public class dAlgae extends Command{
     }
 
     public void execute(){
-        currentAngle = arm.getAngle()*360;
-        if (currentAngle < targetAngle-2){
-            arm.freeArm(true, false);
-        }
-        else if(currentAngle > targetAngle+2){
-            arm.freeArm(false, true);
-        }
-        else{
-            arm.freeArm(false, false);
-        }
+        arm.armPID(2);
     }
 
     @Override

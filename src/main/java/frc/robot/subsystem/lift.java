@@ -40,8 +40,8 @@ public class lift extends SubsystemBase{
         }
     }   
 
-    public double getAngle(){
-        return ((liftMotor.getPosition().getValueAsDouble()/16)*360);
+    public double getAngle() {
+        return (liftMotor.getPosition().getValueAsDouble()/16);
     }
 
     //this requires the size of the sprocket on the gear to calculate needed encoder values

@@ -11,6 +11,7 @@ public class L3 extends Command{
         this.elevator = elevator;
         addRequirements(elevator);
         targetAngle = 2160;
+        targetAngle = 2160;
     }   
 
     @Override

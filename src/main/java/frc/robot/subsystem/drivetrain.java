@@ -61,6 +61,7 @@ public class drivetrain extends SubsystemBase {
        
         //PathPlanner
         // autoBuilder = new AutoBuilder();
+        // autoBuilder = new AutoBuilder();
         gyro = new Pigeon2(10);
         rightEncoder = rightfront.getEncoder();
         leftEncoder = leftfront.getEncoder();
@@ -87,7 +88,7 @@ public class drivetrain extends SubsystemBase {
         leftrear.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+    
         //pathplanner
     
         // try{

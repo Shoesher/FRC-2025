@@ -65,6 +65,5 @@ public class RobotContainer {
       //Put arm back down to complete the score
       public Command confirm(){
         return grab;
-      }
-
-}    
+      } 
+    }
