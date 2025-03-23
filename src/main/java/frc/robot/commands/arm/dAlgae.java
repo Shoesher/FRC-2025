@@ -18,7 +18,16 @@ public class dAlgae extends Command{
     }
 
     public void execute(){
-        arm.armPID(2);
+        currentAngle = arm.getAngle()*360;
+        if (currentAngle < targetAngle-2){
+            arm.freeArm(true, false);
+        }
+        else if(currentAngle > targetAngle+2){
+            arm.freeArm(false, true);
+        }
+        else{
+            arm.freeArm(false, false);
+        }
     }
 
     @Override

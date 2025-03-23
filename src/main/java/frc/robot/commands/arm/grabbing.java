@@ -6,8 +6,6 @@ public class grabbing extends Command{
     private final cIntake arm;
     private double targetAngle;
     private double currentAngle;
-    private double currentAngle;
-    private double targetAngle;
 
     public grabbing(cIntake arm){
         this.arm = arm;
@@ -20,16 +18,6 @@ public class grabbing extends Command{
     }
 
     public void execute(){
-        currentAngle = arm.getAngle()*360;
-        if (currentAngle < targetAngle){
-            arm.freeArm(true, false);
-        }
-        else if(currentAngle > targetAngle){
-            arm.freeArm(false, true);
-        }
-        else{
-            arm.freeArm(false, false);
-        }
         currentAngle = arm.getAngle()*360;
         if (currentAngle < targetAngle-2){
             arm.freeArm(true, false);
