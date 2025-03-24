@@ -16,6 +16,8 @@ import frc.robot.commands.arm.scoring;
 import frc.robot.commands.arm.grabbing;
 import frc.robot.commands.arm.holding;
 import frc.robot.commands.arm.dAlgae;
+//intake
+import frc.robot.commands.arm.intake;
 //Emergancy drive command
 import frc.robot.commands.drive.forwards;
 
@@ -30,6 +32,8 @@ public class RobotContainer {
       private grabbing grab;
       private holding hold;
       private dAlgae dAlgae;
+      //intake
+      private intake intake;
 
       public RobotContainer(){
       }
@@ -61,6 +65,10 @@ public class RobotContainer {
       //Go to the L4 scoring position
       public Command scoreL4(double time){
         return new SequentialCommandGroup(dAlgae, new WaitCommand(time), L4);
+      }
+      //run coral into the catch
+      public Command intake(double time){
+        return intake;
       }
       //Put arm back down to complete the score
       public Command confirm(){

@@ -1,7 +1,6 @@
 package frc.robot.subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.RobotContainer;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class operatorinterface extends SubsystemBase {
@@ -33,6 +32,7 @@ public class operatorinterface extends SubsystemBase {
     private void updateCoral(){
         //coral.freeArm();
         coral.setArm(controller2.getYButtonPressed(), controller2.getBButtonPressed(), controller2.getAButtonPressed(), controller2.getXButtonPressed());
+        coral.runIntake(controller2.getLeftTriggerAxis(), controller2.getRightTriggerAxis());
     }
 
     private void updateLift(){

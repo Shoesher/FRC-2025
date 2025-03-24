@@ -23,10 +23,13 @@ public class cIntake extends SubsystemBase {
 
     private SparkMax armMotor;
     private SparkMaxConfig armConfig;
+    private SparkMax intakeMotor;
+    private SparkMaxConfig intakeConfig;
 
     //arm initialiation
     private final PIDController cPID;
     private RelativeEncoder armCoder;
+    private RelativeEncoder intakeCoder;
     // private double encoderDPP = 42;
     private double armStates[] = {0,35,80,-80}; //proccessing angle to be determined, same with intake angle
     private int position = 1;
@@ -34,11 +37,16 @@ public class cIntake extends SubsystemBase {
     private cIntake(){
         //Motor initialization
         armMotor = new SparkMax(5, MotorType.kBrushless);
+        intakeMotor = new SparkMax(6, MotorType.kBrushless);
+
         armConfig = new SparkMaxConfig();
+        intakeConfig = new SparkMaxConfig();
         armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         //Attack modes
         cPID = new PIDController(0.0005, 0.000005, 0);
         armCoder = armMotor.getEncoder();
+        intakeCoder = intakeMotor.getEncoder();
     }
 
     public void freeArm(boolean button1, boolean button2){
@@ -53,8 +61,24 @@ public class cIntake extends SubsystemBase {
         }
     }
 
+    public void runIntake(double input1, double input2){
+        if(input1 > 0.1){
+            intakeMotor.set(0.4);
+        }
+        else if(input2 > 0.1){
+            intakeMotor.set(-0.4);
+        }
+        else{
+            intakeMotor.set(0);
+        }
+    }
+
     public double getAngle(){
         return (armCoder.getPosition())/60;
+    }
+
+    public double getIntakeAngle(){
+        return (intakeCoder.getPosition());
     }
 
     public void setArm(boolean button1, boolean button2, boolean button3, boolean button4){
