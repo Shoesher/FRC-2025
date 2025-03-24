@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Second;
+// import static edu.wpi.first.units.Units.Percent;
+// import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 
 public class LEDS extends SubsystemBase{
@@ -41,7 +41,7 @@ public class LEDS extends SubsystemBase{
     //Wave effect during teleop
     public void Wave(){
         //Initialization for this pattern
-        base = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kViolet, Color.kCyan);
+        base = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kViolet, Color.kWhiteSmoke);
         pattern = base.breathe(Seconds.of(2));
         //Apply effect
         pattern.applyTo(Buffer);
@@ -51,8 +51,8 @@ public class LEDS extends SubsystemBase{
     //Wave effect during auton
     public void AutonWave(){
         //Initialization for this pattern
-        base = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kCyan, Color.kLimeGreen);
-        pattern = base.scrollAtRelativeSpeed(Percent.per(Second).of(25)); // Scroll at 25% of LED length per second
+        base = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kMediumAquamarine, Color.kMediumSeaGreen);
+        pattern = base.breathe(Seconds.of(2));
         //Apply effect
         pattern.applyTo(Buffer);
         strip.setData(Buffer);
