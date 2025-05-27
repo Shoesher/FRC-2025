@@ -71,7 +71,7 @@ public class drivetrain extends SubsystemBase {
     
 
     public void Drivecode(double Leftjoy, double Rightjoy, boolean buttonY){
-        if (buttonY && !nitroActive && (cooldownTimer.get() > 3 || cooldownTimer.get() == 0)) {
+        if (buttonY && !nitroActive && (cooldownTimer.get() > 3 || !cooldownTimer.isRunning())) {
             nitroActive = true;
             timer.start();
             cooldownTimer.stop();
