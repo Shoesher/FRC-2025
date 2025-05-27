@@ -28,8 +28,8 @@ public class drivetrain extends SubsystemBase {
     private boolean nitroActive = false; //speedboost
     private double normalSpeed = 0.15;
     private double boostedSpeed = 0.25;
-    private Timer timer = new Timer();
-    private Timer cooldownTimer = new Timer();
+    private Timer timer;
+    private Timer cooldownTimer;
 
 
 
@@ -57,7 +57,8 @@ public class drivetrain extends SubsystemBase {
         rightfront.configure(config3, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightrear.configure(config4, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
-        
+        timer = new Timer();
+        cooldownTimer = new Timer();
     }
 
     //Teleop Drivetrain code
